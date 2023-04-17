@@ -1,0 +1,14 @@
+.page-login-height {
+  height: 100vh;
+}
+.bg-image {
+  background-image: url("https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png");
+  /* 可选的其他属性 */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* ... */
+}
+.height-100{
+    height:40rem;
+}

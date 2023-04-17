@@ -1,0 +1,15 @@
+.flex-vh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+}
+.ant-menu-title-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.header{
+    padding-inline: 0;
+}
