@@ -2,11 +2,11 @@ import { connect } from "react-redux";
 import { toggleDarkMode } from "../store/app";
 import "../css/Login.css";
 import AuthForm from "../coms/AuthForm";
-import { Row, Col,Form,Button,Checkbox } from "antd";
+import { Row, Col,Form,Button } from "antd";
 import classNames from "classnames";
 import TwoColLayout from "../coms/TwoColLayout";
 import { Link } from "react-router-dom";
-function Login({ darkMode, toggleDarkMode }) {
+function Register({ darkMode, toggleDarkMode }) {
   return (
     <Row
       style={{ opacity: darkMode ? ".6" : ".8" }}
@@ -22,9 +22,9 @@ function Login({ darkMode, toggleDarkMode }) {
           rightCol={6}
           LeftChild={() => <></>}
           RightChild={() => (
-            <AuthForm formType="login">
-              <Form.Item>
-              <Link to='/'>申诉</Link>
+            <AuthForm formType="regist">
+                 <Form.Item>
+                 <Link to='/login'>已有账号？去登录</Link>
               </Form.Item>
             </AuthForm>
           )}
@@ -41,4 +41,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   toggleDarkMode,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

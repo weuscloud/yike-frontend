@@ -1,8 +1,6 @@
 import { connect } from "react-redux";
 import { toggleDarkMode } from "../store/app";
-import "../css/Home.css";
-import BlogList from "../coms/BlogList";
-
+import "../css/BlogDetail.css";
 import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";

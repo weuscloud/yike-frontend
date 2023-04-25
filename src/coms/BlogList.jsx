@@ -1,6 +1,5 @@
 import { List } from "antd";
 import BlogItem from "./BlogItem";
-import TwoColLayout from "./TwoColLayout";
 const listData = Array.from({
   length: 4,
 }).map((_, i) => ({
@@ -19,7 +18,7 @@ const BlogList = ({ loading }) => {
     itemLayout="vertical"
     size="large"
     dataSource={listData}
-    renderItem={(item) => <BlogItem item={item} />}
+    renderItem={(item) => <BlogItem  item={item} />}
   />
   );
 };

@@ -12,23 +12,25 @@ import BlogEdit from "./pages/BlogEdit";
 import About from "./pages/About";
 import Archive from "./pages/Archive";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Tag from "./pages/Tag";
 import UserProfile from "./pages/UserProfile";
 
 function App() {
   const darkMode = useSelector((state) => state.app.darkMode);
   return (
-    <ConfigProvider theme={darkMode?"dark":"light"}>
+    <ConfigProvider theme={darkMode ? "dark" : "light"}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index  element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/user" element={<UserProfile />} />
             <Route path="/edit" element={<BlogEdit />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/login" element={<Login />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
-            <Route path="/regist" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/tags" element={<Tag />} />
             <Route path="/user" element={<UserProfile />} />
             <Route path="*" element={<NotFound />} />

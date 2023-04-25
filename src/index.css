@@ -1,35 +1,44 @@
-  *{
-    margin: 0;
-    padding: 0;
-    transition:background 0.3s,width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s !important;
-    box-sizing: border-box;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  transition:background 0.3s,width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s !important;
+  box-sizing: border-box;
+}
 
-  .body{
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
-  }
-  .margin-top-bottom{
-    margin: 2rem 0;
-  }
-  .padding-top-bottom{
-    padding: 2rem 0;
-  }
-  @media screen and (min-width: 768px) {
-  
-    .ant-row > div:nth-child(-n + 2) {
-      width: 50%;
-      float: left;
-    }
-    .ant-row > div:nth-child(n + 3) {
-      clear: left;
-    }
-  }
-  .Flex-Center{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.body{
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.margin-top-bottom{
+  margin: 2rem 0;
+}
+.padding-top-bottom{
+  padding: 2rem 0;
+}
+@media screen and (min-width: 768px) {
 
-  
+  .ant-row > div:nth-child(-n + 2) {
+    width: 50%;
+    float: left;
+  }
+  .ant-row > div:nth-child(n + 3) {
+    clear: left;
+  }
+}
+.Flex-Center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer,header{
+  padding-inline: 0 !important;
+}
+.ant-modal-content{
+  background-color: inherit !important;
+  border-radius: 0 !important;
+}
+.ant-modal-close{
+  color: inherit !important;
+}
