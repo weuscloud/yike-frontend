@@ -1,12 +1,12 @@
 import axios from 'axios';
 // 注册接口
-function register(userData) {
-  return axios.post('/regist', userData);
+function register({ username, password }) {
+  return axios.post('/register',{ username, password } );
 }
 
 // 登录接口
-function login(userData) {
-  return axios.post('/login', userData);
+function login({ username, password }) {
+  return axios.post('/login', { username, password });
 }
 
 export { register, login };

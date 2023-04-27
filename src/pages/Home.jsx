@@ -18,7 +18,7 @@ function Home({ darkMode, toggleDarkMode }) {
             <AuthorCard
               name="wangqicheng"
               avatarUrl="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              bio="张三爱学习"
+              bio="张三不爱学习！！！！！！！！！！！！！！！"
             />
           )}
         />

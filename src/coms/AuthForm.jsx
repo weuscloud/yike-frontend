@@ -1,15 +1,15 @@
 import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-
+import { register,login } from "../api/user";
 function AuthForm({ children, formType, bgColor, textColor }) {
   const formTitle = formType === "login" ? "登录" : "新用户";
   const btnText= formType === "login" ? "确认" : "注册";
   const usernameRules = [
-    { required: true, message: "请输入用户名!" },
+    { required: true, message: "请输入手机号或邮箱!" },
     {
-      pattern: /^[a-zA-Z0-9]{5,10}$/,
-      message: "用户名需为字母或数字，5-10字",
+      pattern:/^1[3-9]\d{9}$|^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
+      message: "需为手机号或邮箱",
     },
   ];
 
@@ -21,8 +21,21 @@ function AuthForm({ children, formType, bgColor, textColor }) {
         "要求密码长度在8到16个字符之间，至少包含一个数字和一个英文字母，可以包含特殊字符",
     },
   ];
-  const onFinish = (values) => {
-    // handle form submission
+  const onFinish = async (values) => {
+    try {
+      const { username, password } = values;
+      // call the API function depending on the form name
+      if (formType === "login") {
+        await login({ username, password });
+        // redirect or perform other actions upon successful login
+      } else {
+        await register({ username, password });
+        // redirect or perform other actions upon successful registration
+      }
+    } catch (error) {
+      console.error(error);
+      // handle error cases
+    }
   };
   return (
     <div style={{ backgroundColor: bgColor, padding: "1rem" }}>
