@@ -1,14 +1,15 @@
 import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { register,login } from "../api/user";
-function AuthForm({ children, formType, bgColor, textColor }) {
+import { register, login } from "../api/user";
+import CryptoJS from 'crypto-js';
+function AuthForm({ children, formType, bgColor, textColor,PWD_SALT }) {
   const formTitle = formType === "login" ? "登录" : "新用户";
-  const btnText= formType === "login" ? "确认" : "注册";
+  const btnText = formType === "login" ? "确认" : "注册";
   const usernameRules = [
     { required: true, message: "请输入手机号或邮箱!" },
     {
-      pattern:/^1[3-9]\d{9}$|^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
+      pattern: /^1[3-9]\d{9}$|^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
       message: "需为手机号或邮箱",
     },
   ];
@@ -23,7 +24,9 @@ function AuthForm({ children, formType, bgColor, textColor }) {
   ];
   const onFinish = async (values) => {
     try {
-      const { username, password } = values;
+      let { username, password } = values;
+      const salt = PWD_SALT;
+      password = CryptoJS.SHA256(password + salt).toString();
       // call the API function depending on the form name
       if (formType === "login") {
         await login({ username, password });
@@ -56,16 +59,16 @@ function AuthForm({ children, formType, bgColor, textColor }) {
           />
         </Form.Item>
         <Form.Item
-        name="sbbtn"
-        
+          name="sbbtn"
+
         >
           <Button
-          style={{float:"right"}}
+            style={{ float: "right" }}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-          {btnText}
+            {btnText}
           </Button>
         </Form.Item>
         {children}
@@ -77,6 +80,7 @@ function AuthForm({ children, formType, bgColor, textColor }) {
 const mapStateToProps = (state) => ({
   bgColor: state.theme[state.app.theme].bgColor,
   textColor: state.theme[state.app.theme].textColor,
+  PWD_SALT:state.app.PWD_SALT
 });
 
 const mapDispatchToProps = {};

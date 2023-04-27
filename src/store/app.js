@@ -6,6 +6,7 @@ const appSlice = createSlice({
     darkMode: false,
     theme: "light",
     modalVisible: false,
+    PWD_SALT:"WANGQICHENG",
   },
   reducers: {
     toggleDarkMode: (state) => {
