@@ -3,7 +3,9 @@ import axios from 'axios';
 async function register({ username, password }) {
   const res = await axios.post('/register', { username, password });
   if (res.status === 200) {
-    localStorage.setItem('token', res.data.token);
+    const { token } = res.data;
+    if (token)
+      localStorage.setItem('token', token);
   }
   return res;
 }
@@ -13,10 +15,21 @@ async function register({ username, password }) {
 async function login({ username, password }) {
   const res = await axios.post('/login', { username, password });
   if (res.status === 200) {
-    localStorage.setItem('token', res.data.token);
+    const { token } = res.data;
+    if (token)
+      localStorage.setItem('token', token);
   }
   return res;
 }
+//get user info
+async function getUserById(id){
+  const res = await axios.get(`/users/${id}`);
+  if (res.status === 200) {
+    const { user } = res.data;
+    if (user)
+      return user;
+  }
+  return {};
+}
 
-
-export { register, login };
+export { register, login ,getUserById};

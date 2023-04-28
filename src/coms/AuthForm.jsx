@@ -3,7 +3,8 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { register, login } from "../api/user";
 import CryptoJS from 'crypto-js';
-function AuthForm({ children, formType, bgColor, textColor,PWD_SALT }) {
+import { updateToken } from '../store/app'
+function AuthForm({ children, formType, bgColor, textColor, updateToken, cb, PWD_SALT }) {
   const formTitle = formType === "login" ? "登录" : "新用户";
   const btnText = formType === "login" ? "确认" : "注册";
   const usernameRules = [
@@ -27,14 +28,17 @@ function AuthForm({ children, formType, bgColor, textColor,PWD_SALT }) {
       let { username, password } = values;
       const salt = PWD_SALT;
       password = CryptoJS.SHA256(password + salt).toString();
-      // call the API function depending on the form name
+      let res = {};
       if (formType === "login") {
-        await login({ username, password });
-        // redirect or perform other actions upon successful login
+        res = await login({ username, password });
       } else {
-        await register({ username, password });
-        // redirect or perform other actions upon successful registration
+        res = await register({ username, password });
       }
+      const { token } = res.data;
+      if (res.status === 200 && token)
+        updateToken({ token })
+      if (typeof cb === 'function')
+        cb(res.status)
     } catch (error) {
       console.error(error);
       // handle error cases
@@ -80,9 +84,11 @@ function AuthForm({ children, formType, bgColor, textColor,PWD_SALT }) {
 const mapStateToProps = (state) => ({
   bgColor: state.theme[state.app.theme].bgColor,
   textColor: state.theme[state.app.theme].textColor,
-  PWD_SALT:state.app.PWD_SALT
+  PWD_SALT: state.app.PWD_SALT,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateToken
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

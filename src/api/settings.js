@@ -3,7 +3,6 @@ import axios from "axios";
 // Set the base URL
 axios.defaults.baseURL = "/api";
 
-
 // Set the authorization header with the token
 const setAuthToken = (token) => {
     if (token) {
