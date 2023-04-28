@@ -21,7 +21,14 @@ const appSlice = createSlice({
       state.darkMode = action.payload === true ? true : false;
     },
     updateToken:(state, action) => {
-      state.token = action.payload.token
+      const {token}=action.payload;
+      if(typeof token==='string'){
+        state.token=token;
+        localStorage.setItem('token',token);
+      }else{
+        state.token=null;
+        localStorage.setItem('token',null);
+      }
     },
   },
 });

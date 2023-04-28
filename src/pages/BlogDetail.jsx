@@ -5,13 +5,12 @@ import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
-import BlogContent from "../coms/BlogContent";
 function BlogDetail({ darkMode, toggleDarkMode }) {
   return (
     <Row  className={classNames("Flex-Center","margin-top-bottom")}>
       <Col xs={24} md={20}>
         <TwoColLayout
-          LeftChild={() => <BlogContent content={`# 1\n# 2 \n\`\`\`js\n function(){}\n\`\`\``} />}
+          LeftChild={() => <></>}
           RightChild={() => (
             <AuthorCard
               name="wangqicheng"

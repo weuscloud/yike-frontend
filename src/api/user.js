@@ -1,35 +1,29 @@
 import axios from 'axios';
 // 注册接口
 async function register({ username, password }) {
-  const res = await axios.post('/register', { username, password });
-  if (res.status === 200) {
-    const { token } = res.data;
-    if (token)
-      localStorage.setItem('token', token);
+  try {
+    const res = await axios.post('/register', { username, password });
+    return res;
+  } catch (error) {
+    return { data: {}, status: 404 }
   }
-  return res;
 }
 
 
 // 登录接口
 async function login({ username, password }) {
-  const res = await axios.post('/login', { username, password });
-  if (res.status === 200) {
-    const { token } = res.data;
-    if (token)
-      localStorage.setItem('token', token);
+  try {
+    const res = await axios.post('/login', { username, password });
+    return res;
+  } catch (error) {
+    return { data: {}, status: 404 }
   }
-  return res;
 }
 //get user info
-async function getUserById(id){
-  const res = await axios.get(`/users/${id}`);
-  if (res.status === 200) {
-    const { user } = res.data;
-    if (user)
-      return user;
-  }
-  return {};
-}
+async function getUserById(id) {
 
-export { register, login ,getUserById};
+}
+async function logOut(){
+  
+}
+export { register, login, getUserById };

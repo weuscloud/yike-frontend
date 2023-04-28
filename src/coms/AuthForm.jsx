@@ -35,13 +35,12 @@ function AuthForm({ children, formType, bgColor, textColor, updateToken, cb, PWD
         res = await register({ username, password });
       }
       const { token } = res.data;
-      if (res.status === 200 && token)
+      if (res.status === 200 && token) {
         updateToken({ token })
+      }
       if (typeof cb === 'function')
-        cb(res.status)
+      cb(res.status)
     } catch (error) {
-      console.error(error);
-      // handle error cases
     }
   };
   return (

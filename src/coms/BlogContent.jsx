@@ -4,7 +4,6 @@ import gfm from 'remark-gfm';
 import toc from 'remark-toc';
 import rehypeHighlight from 'rehype-highlight';
 import { Typography } from 'antd';
-import CodeBlock from './CodeBlock';
 import { connect } from 'react-redux';
 const { Title } = Typography;
 
@@ -13,8 +12,7 @@ const BlogContent = ({ textColor,content,bgColor }) => {
     <div  style={{ color: textColor, backgroundColor: bgColor }}>
       <Title level={1}>Blog Content</Title>
       <ReactMarkdown
-        plugins={[gfm, toc]}
-        renderers={{ code: CodeBlock }}
+        remarkPlugins={[gfm, toc]}
         rehypePlugins={[rehypeHighlight]}
         children={content}
       />

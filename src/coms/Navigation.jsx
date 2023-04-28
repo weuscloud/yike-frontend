@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Menu, Input, Button, Avatar } from "antd";
+import React from "react";
 import {
   HomeOutlined,
   ProfileOutlined,
@@ -15,15 +16,11 @@ import Modal from "./Modal";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import AuthForm from "./AuthForm";
+import { message } from 'antd';
+import UserInfoPanel from './UserInfoPanel';
 const { Search } = Input;
 const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
-  const {
-    phone,
-    email,
-    name:username,
-    avatarUrl,
-    id
-  } = token?token.user:{};
+
   const [doLogIn, setDoLogIn] = useState(false);
   const location = useLocation();
   const isLoginPage = location.pathname.split('/')[1] === 'login' || location.pathname.split('/')[1] === 'regist';
@@ -86,21 +83,12 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
         />
       </Menu.Item>
       {
-        isLoginPage ? undefined : <Menu.Item
-          key="userinfo"
-          style={{ backgroundColor: "transparent", display: "inline-block" }}
-        >
-          {token ? (
-            <>
-              <Avatar size={32} src={avatarUrl} />
-              <span style={{ marginLeft: 8 }}>
-                {username.length > 10
-                  ? `${username.slice(0, 10)}`
-                  : username.padEnd(10, "\u00A0")}
-              </span>
-            </>
-          ) : (
-            <>
+        isLoginPage ? null :
+          <Menu.Item
+            key="userinfo"
+            style={{ backgroundColor: "transparent", display: "inline-block" }}
+          >
+            {token ? <UserInfoPanel /> : <>
               <Button
                 type="primary"
                 onClick={handleLogin}
@@ -109,7 +97,18 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
                 登录
               </Button>
               <Modal>
-                <AuthForm usedInModal={true} formType={doLogIn ? "login" : "regist"} />
+                <AuthForm cb={(status) => {
+                  if (status === 200) {
+                    message.success(`${doLogIn ? '登录' : '注册'}成功`);
+                    setModalVisible(false);
+                  }
+                  else if (status === 401) {
+                    message.error(`账号或密码错误`);
+                  }
+                  else {
+                    message.error(`${doLogIn ? '登录' : '注册'}失败`);
+                  }
+                }} formType={doLogIn ? "login" : "regist"} />
               </Modal>
               <Button
                 type="primary"
@@ -121,10 +120,11 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
               >
                 注册
               </Button>
-            </>
-          )}
-        </Menu.Item>
+            </>}
+
+          </Menu.Item>
       }
+
       <Menu.Item
         key="darkmode"
         style={{ backgroundColor: "transparent", display: "inline-block" }}

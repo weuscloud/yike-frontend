@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set the base URL
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = "http://localhost/api";
 
 // Set the authorization header with the token
 const setAuthToken = (token) => {
@@ -25,3 +25,7 @@ axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+axios.defaults.validateStatus = function (status) {
+    return true; // 返回true表示不抛出错误
+};
