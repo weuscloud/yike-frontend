@@ -6,6 +6,8 @@ const appSlice = createSlice({
     darkMode: false,
     theme: "light",
     modalVisible: false,
+    PWD_SALT:"WANGQICHENG",
+    token:localStorage.getItem("token")
   },
   reducers: {
     toggleDarkMode: (state) => {
@@ -18,8 +20,11 @@ const appSlice = createSlice({
     setDarkMode: (state, action) => {
       state.darkMode = action.payload === true ? true : false;
     },
+    updateToken:(state, action) => {
+      state.token = action.payload.token
+    },
   },
 });
 
-export const { setDarkMode,toggleDarkMode, setModalVisible } = appSlice.actions;
+export const { setDarkMode,updateToken,toggleDarkMode, setModalVisible } = appSlice.actions;
 export default appSlice.reducer;

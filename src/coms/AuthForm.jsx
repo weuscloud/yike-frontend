@@ -1,14 +1,16 @@
 import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { register,login } from "../api/user";
-function AuthForm({ children, formType, bgColor, textColor }) {
+import { register, login } from "../api/user";
+import CryptoJS from 'crypto-js';
+import { updateToken } from '../store/app'
+function AuthForm({ children, formType, bgColor, textColor, updateToken, cb, PWD_SALT }) {
   const formTitle = formType === "login" ? "登录" : "新用户";
-  const btnText= formType === "login" ? "确认" : "注册";
+  const btnText = formType === "login" ? "确认" : "注册";
   const usernameRules = [
     { required: true, message: "请输入手机号或邮箱!" },
     {
-      pattern:/^1[3-9]\d{9}$|^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
+      pattern: /^1[3-9]\d{9}$|^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/,
       message: "需为手机号或邮箱",
     },
   ];
@@ -23,15 +25,20 @@ function AuthForm({ children, formType, bgColor, textColor }) {
   ];
   const onFinish = async (values) => {
     try {
-      const { username, password } = values;
-      // call the API function depending on the form name
+      let { username, password } = values;
+      const salt = PWD_SALT;
+      password = CryptoJS.SHA256(password + salt).toString();
+      let res = {};
       if (formType === "login") {
-        await login({ username, password });
-        // redirect or perform other actions upon successful login
+        res = await login({ username, password });
       } else {
-        await register({ username, password });
-        // redirect or perform other actions upon successful registration
+        res = await register({ username, password });
       }
+      const { token } = res.data;
+      if (res.status === 200 && token)
+        updateToken({ token })
+      if (typeof cb === 'function')
+        cb(res.status)
     } catch (error) {
       console.error(error);
       // handle error cases
@@ -56,16 +63,16 @@ function AuthForm({ children, formType, bgColor, textColor }) {
           />
         </Form.Item>
         <Form.Item
-        name="sbbtn"
-        
+          name="sbbtn"
+
         >
           <Button
-          style={{float:"right"}}
+            style={{ float: "right" }}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-          {btnText}
+            {btnText}
           </Button>
         </Form.Item>
         {children}
@@ -77,8 +84,11 @@ function AuthForm({ children, formType, bgColor, textColor }) {
 const mapStateToProps = (state) => ({
   bgColor: state.theme[state.app.theme].bgColor,
   textColor: state.theme[state.app.theme].textColor,
+  PWD_SALT: state.app.PWD_SALT,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateToken
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);
