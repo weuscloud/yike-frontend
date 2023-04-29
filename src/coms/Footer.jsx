@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { useSelector } from "react-redux";
 const { Footer } = Layout;
-
+import packageFile from '../../package.json';
 const MyFooter = () => {
 
   const darkMode = useSelector((state) => state.app.darkMode);
@@ -10,7 +10,8 @@ const MyFooter = () => {
   const textColor = useSelector((state) => state.theme[name].textColor);
   return (
     <Footer style={{color:textColor,textAlign: 'center',backgroundColor:bgColor}} >
-      ©2023 My Company. All Rights Reserved. | 备案号：XXXXXX
+      {packageFile.name} | {packageFile.version} {<br/>}
+      Copyright © 2023 Wang Qi-Cheng. All Rights Reserved. | 备案号：XXXXXX{<br/>}
     </Footer>
   );
 };

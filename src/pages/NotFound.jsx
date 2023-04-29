@@ -2,7 +2,6 @@
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 import { toggleDarkMode } from '../store/app';
-import cn from "classnames";
 import '../css/NotFound.css';
 function NotFound({ darkMode, toggleDarkMode }) {
       return (

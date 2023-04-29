@@ -23,7 +23,5 @@ async function login({ username, password }) {
 async function getUserById(id) {
 
 }
-async function logOut(){
-  
-}
+
 export { register, login, getUserById };

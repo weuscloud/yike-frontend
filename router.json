@@ -1,0 +1,8 @@
+{
+    "login": "/login",
+    "blog": "/blog",
+    "blogCreate":"/blog/create",
+    "user": "/user",
+    "register": "/register",
+    "home":"/"
+}

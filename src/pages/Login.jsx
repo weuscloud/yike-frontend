@@ -1,12 +1,21 @@
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { toggleDarkMode } from "../store/app";
 import "../css/Login.css";
 import AuthForm from "../coms/AuthForm";
-import { Row, Col,Form,Button,Checkbox } from "antd";
+import { Row, Col, Form } from "antd";
 import classNames from "classnames";
 import TwoColLayout from "../coms/TwoColLayout";
 import { Link } from "react-router-dom";
-function Login({ darkMode, toggleDarkMode }) {
+import { useEffect } from "react";
+import { useBack } from '../../hooks/useBack';
+
+function Login({ token, darkMode, toggleDarkMode }) {
+ const back=useBack()
+  useEffect(() => {
+    if(token)
+    back();
+  }, [token]);
+
   return (
     <Row
       style={{ opacity: darkMode ? ".6" : ".8" }}
@@ -24,7 +33,7 @@ function Login({ darkMode, toggleDarkMode }) {
           RightChild={() => (
             <AuthForm formType="login">
               <Form.Item>
-              <Link to='/'>申诉</Link>
+                <Link to='/'>申诉</Link>
               </Form.Item>
             </AuthForm>
           )}
@@ -36,6 +45,7 @@ function Login({ darkMode, toggleDarkMode }) {
 
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,
+  token: state.app.token
 });
 
 const mapDispatchToProps = {

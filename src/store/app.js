@@ -1,4 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+const initialToken=()=>{
+  const token=localStorage.getItem("token")
+  if(token)return token;
+  return null;
+}
 const appSlice = createSlice({
   name: "app",
   initialState: {
@@ -7,7 +12,7 @@ const appSlice = createSlice({
     theme: "light",
     modalVisible: false,
     PWD_SALT:"WANGQICHENG",
-    token:localStorage.getItem("token")
+    token:initialToken()
   },
   reducers: {
     toggleDarkMode: (state) => {
@@ -27,7 +32,7 @@ const appSlice = createSlice({
         localStorage.setItem('token',token);
       }else{
         state.token=null;
-        localStorage.setItem('token',null);
+        localStorage.removeItem('token');
       }
     },
   },

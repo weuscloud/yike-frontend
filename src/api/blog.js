@@ -1,28 +1,51 @@
-import axios from "axios";
+const axios = require('axios');
 
-// 创建博客
-const createBlog = (data) => {
-  return axios.post("/blog", data);
-};
-
-// 获取博客列表
-const getBlogs = () => {
-  return axios.get("/blogs");
-};
-
-// 获取单个博客
-const getBlog = (id) => {
-  return axios.get(`/blog/${id}`);
-};
-
-// 更新博客
-const updateBlog = (id, data) => {
-  return axios.put(`/blogs/${id}`, data);
-};
-
-// 删除博客
-const deleteBlog = (id) => {
-  return axios.delete(`/blog/${id}`);
-};
-
-export { createBlog, getBlogs, getBlog, updateBlog, deleteBlog };
+async function createArticle(title, description, content, authorId) {
+  try {
+    const response = await axios.post('/blog', {
+      title,
+      description,
+      content,
+      authorId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function getArticle(id) {
+  try {
+    const response = await axios.get(`/blog/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function getAllArticles() {
+  try {
+    const response = await axios.get('/blogs');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function updateArticle(id, title, description, content) {
+  try {
+    const response = await axios.put(`/blog/${id}`, {
+      title,
+      description,
+      content,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function deleteArticle(id) {
+  try {
+    const response = await axios.delete(`/blog/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

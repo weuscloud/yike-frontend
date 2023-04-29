@@ -2,9 +2,10 @@ import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { register, login } from "../api/user";
-import CryptoJS from 'crypto-js';
+import SAFE from 'crypto-js';
 import { updateToken } from '../store/app'
-function AuthForm({ children, formType, bgColor, textColor, updateToken, cb, PWD_SALT }) {
+import { message } from 'antd';
+function AuthForm({ children, formType, bgColor, textColor, updateToken, callback, PWD_SALT }) {
   const formTitle = formType === "login" ? "登录" : "新用户";
   const btnText = formType === "login" ? "确认" : "注册";
   const usernameRules = [
@@ -27,19 +28,30 @@ function AuthForm({ children, formType, bgColor, textColor, updateToken, cb, PWD
     try {
       let { username, password } = values;
       const salt = PWD_SALT;
-      password = CryptoJS.SHA256(password + salt).toString();
-      let res = {};
+      password = SAFE.SHA256(password + salt).toString();
+      let res = { status: 400 };
+
       if (formType === "login") {
         res = await login({ username, password });
       } else {
         res = await register({ username, password });
       }
+
       const { token } = res.data;
+
+
       if (res.status === 200 && token) {
         updateToken({ token })
+        message.success(`${formType === 'login' ? '登录' : '注册'}成功`);
       }
-      if (typeof cb === 'function')
-      cb(res.status)
+      else if (res.status === 401) {
+        message.error(`账号或密码错误`);
+      }
+      else {
+        message.error(`${formType === 'login' ? '登录' : '注册'}失败`);
+      }
+      if (typeof callback === 'function')
+        callback(res)
     } catch (error) {
     }
   };
