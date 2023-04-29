@@ -43,10 +43,10 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
   if (!token) return null;
 
   const cb = {
-    userCenter: () => {
+    userCenter: ({id}) => {
       // 处理个人信息的回调函数
       try {
-        navigate(`${router.user}`)
+        navigate(`${router.user}/${id}`)
       } catch (error) {
 
       }
@@ -69,21 +69,26 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
 
       }
     },
-    goodBye: () => {
+    goodBye: ({id}) => {
+      try {
+        navigate(`${router.user}/delete/${id}`)
+      } catch (error) {
 
+      }
     }
   };
 
-  const handleMenuClick = (e) => {
-    if (typeof cb[e.key] === 'function')
-      cb[e.key]()
-  }
+ 
   const {
     name: username,
     avatarUrl,
     id
   } = decodeJWT(token.split('.')[1]).user;
   if (username.length == 0) return null;
+  const handleMenuClick = (e) => {
+    if (typeof cb[e.key] === 'function')
+      cb[e.key]({id})
+  }
   return (
     <Menu.Item
       key="userinfo"

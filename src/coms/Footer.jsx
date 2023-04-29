@@ -11,7 +11,7 @@ const MyFooter = () => {
   return (
     <Footer style={{color:textColor,textAlign: 'center',backgroundColor:bgColor}} >
       {packageFile.name} | {packageFile.version} {<br/>}
-      Copyright © 2023 Wang Qi-Cheng. All Rights Reserved. | 备案号：XXXXXX{<br/>}
+      Copyright © 2023 Wang Qi-Cheng. All Rights Reserved. | 备案号：{packageFile.record}{<br/>}
     </Footer>
   );
 };
