@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { toggleDarkMode } from "../store/app";
 import "../css/Blog.css";
 import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
@@ -8,8 +7,11 @@ import classNames from "classnames";
 import { useEffect } from "react";
 import { useBack } from '../../hooks/useBack';
 import useOperationAndId from "../../hooks/useOperationAndId";
-
-function Blog({ token, darkMode, toggleDarkMode }) {
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import router from '../../router.json'
+function Blog({ token, bgColor,darkMode }) {
+  const nav=useNavigate();
   const { operation, id } = useOperationAndId();
   const back = useBack()
   useEffect(() => {
@@ -18,14 +20,14 @@ function Blog({ token, darkMode, toggleDarkMode }) {
       back();
     //no token but op
     if(operation&&!token)
-      back();
+     nav(router.login);
   }, [token]);
 
   return (
-    <Row className={classNames("Flex-Center", "margin-top-bottom")}>
-      <Col xs={24} md={20}>
-        {operation}
-        {id}
+    <Row style={{backgroundColor:bgColor}} className={classNames("Flex-Center", "margin-top-bottom")}>
+      <Col xs={24} md={20} >
+      {id}
+      {operation}
       </Col>
     </Row>
   );
@@ -34,9 +36,10 @@ function Blog({ token, darkMode, toggleDarkMode }) {
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,
   token: state.app.token,
+  bgColor:state.theme[state.app.theme].bgColor
 });
 
 const mapDispatchToProps = {
-  toggleDarkMode,
+
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);
