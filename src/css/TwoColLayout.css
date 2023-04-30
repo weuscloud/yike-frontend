@@ -1,0 +1,10 @@
+@media screen and (min-width: 768px) {
+
+    .ant-row.twocoloumslayout > div:nth-child(-n + 2) {
+      width: 50%;
+      float: left;
+    }
+    .ant-row.twocoloumslayout> div:nth-child(n + 3) {
+      clear: left;
+    }
+  }

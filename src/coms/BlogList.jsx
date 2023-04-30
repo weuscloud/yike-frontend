@@ -15,6 +15,7 @@ const listData = Array.from({
 const BlogList = ({ loading }) => {
   return (
     <List
+    className="margin-top-bottom"
     itemLayout="vertical"
     size="large"
     dataSource={listData}

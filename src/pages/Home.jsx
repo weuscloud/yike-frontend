@@ -7,13 +7,17 @@ import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
-
+import Carousel from "../coms/Carousel";
 function Home({ darkMode, toggleDarkMode }) {
   return (
-    <Row  className={classNames("Flex-Center","margin-top-bottom")}>
+    <Row className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20}>
         <TwoColLayout
-          LeftChild={() =>( <BlogList />)}
+          LeftChild={() => (
+            <>
+            <Carousel/>
+              <BlogList />
+              </>)}
           RightChild={() => (
             <AuthorCard
               name="wangqicheng"

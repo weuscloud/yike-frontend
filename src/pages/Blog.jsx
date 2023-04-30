@@ -10,6 +10,8 @@ import useOperationAndId from "../../hooks/useOperationAndId";
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import router from '../../router.json'
+import LeftBar from '../coms/VerticalMenu';
+import Editor from '../coms/Editor';
 function Blog({ token, bgColor,darkMode }) {
   const nav=useNavigate();
   const { operation, id } = useOperationAndId();
@@ -24,10 +26,18 @@ function Blog({ token, bgColor,darkMode }) {
   }, [token]);
 
   return (
-    <Row style={{backgroundColor:bgColor}} className={classNames("Flex-Center", "margin-top-bottom")}>
+    <Row  className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20} >
-      {id}
-      {operation}
+      <TwoColLayout
+        rightCol={19}
+          LeftChild={() => (
+            <>
+           <LeftBar/>
+              </>)}
+          RightChild={() => (
+            <Editor/>
+          )}
+        />
       </Col>
     </Row>
   );

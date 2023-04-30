@@ -20,7 +20,7 @@ const IconText = ({ icon, text, textColor }) => (
 
 const BlogItem = ({ item, loading, darkMode,primaryColor, bgColor, textColor }) => (
   <Row>
-    <Col  style={{borderBottom:darkMode?"":`1px solid ${primaryColor}`,padding: "1rem 2rem" , color: textColor, backgroundColor: bgColor }} xs={24} md={24}>
+    <Col  style={{marginBottom:'1rem',borderBottom:darkMode?"":`1px solid ${primaryColor}`,padding: "1rem 2rem" , color: textColor, backgroundColor: bgColor }} xs={24} md={24}>
       <Skeleton loading={loading} active>
         <Layout
           LeftChild={() => (

@@ -103,8 +103,8 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
         <div>
           <Avatar size={32} src={avatarUrl} />
           <span style={{ marginLeft: 8 }}>
-            {username.length > 10
-              ? `${username.slice(0, 10)}`
+            {username.length > 13
+              ? `${username.slice(0, 13)}`
               : username.padEnd(10, "\u00A0")}
           </span>
         </div>
