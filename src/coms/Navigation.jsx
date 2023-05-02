@@ -9,38 +9,19 @@ import {
   BulbFilled,
   BulbOutlined,
 } from "@ant-design/icons";
-import "./Navigation.css";
+import "../css/Navigation.css";
 import { toggleDarkMode, setModalVisible } from "../store/app";
 import { connect } from "react-redux";
 import NavInfoPanel from './NavInfoPanel';
 import NavloginPanel from "./NavloginPanel";
 import { getTopTags } from '../api/tag';
 import classNames from "classnames";
-
+import useTopTags from "../hooks/useTopTags";
+import router from '../../router.json'
 const { Search } = Input;
 const Navigation = ({ darkMode, toggleDarkMode }) => {
 
-  const [topTags, setTopTags] = useState([]);
-  useEffect(() => {
-    const fetchTopTags = async () => {
-      const tags = localStorage.getItem('topTags');
-
-      if (tags) {
-        setTopTags(JSON.parse(tags));
-      } else {
-        const fetchedTags = await getTopTags();
-        setTopTags(fetchedTags);
-        localStorage.setItem('topTags', JSON.stringify(fetchedTags));
-      }
-
-    };
-    try {
-
-      fetchTopTags();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const topTags=useTopTags();
   return (
     <Menu
       defaultSelectedKeys={['home']}
@@ -58,7 +39,11 @@ const Navigation = ({ darkMode, toggleDarkMode }) => {
         </Link>
       </Menu.Item>
       {topTags && topTags.map((tag) => (
-        <Menu.Item className={classNames('inlineBlock')} key={tag.id}>{tag.name}</Menu.Item>
+        <Menu.Item className={classNames('inlineBlock')} key={tag.id}>
+           <Link to={`${router.tags}/${tag.id}`}>
+           {tag.name}
+        </Link>
+          </Menu.Item>
       ))}
       <Menu.Item style={{ backgroundColor: "transparent" }} key="search">
         <Search

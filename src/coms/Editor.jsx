@@ -1,48 +1,86 @@
 import React, { useState } from 'react';
 import { connect } from "react-redux";
-import { Input, Form } from 'antd';
-import FormGenerator from './FormGenerator';
+import { Input, Form, Button } from 'antd';
 import Preview from './Preview';
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import useTopTags from "../hooks/useTopTags";
 
-
-function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
+function RichTextEditor({ readOnly, bgColor, darkMode, primaryColor, textColor }) {
+  //content
   const [content, setContent] = useState('');
-  const [isPreview, setPreview] = useState(true);
-  function handleChange(value) {
-    setContent(value);
-  }
-  function handleSubmit() {
-    // 在这里执行提交操作
-  }
-  const names = [
-    {
-      label: '标题',
-      input: {
-        required: false,
-        rules: [{ max: 20, message: '长度不能超过20个字符' }],
-      }
-    },
-    {
-      label: '描述',
-      input: {
-        required: false,
-        rules: [{ max: 60, message: '长度不能超过60个字符' }],
-      }
+  //tags
+  const tags = useTopTags();
+  const [selectedTags, setSelectedTags] = useState([]);
+  const handleTagClick = tag => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
     }
-  ];
-
+  };
+  const onFinish = (fm) => {
+    delete fm.content;
+    const form = { tags:selectedTags,content, ...fm };
+    console.log(form)
+  }
   return (
     <div style={{ padding: '2rem', backgroundColor: darkMode ? textColor : bgColor }}>
-      <FormGenerator names={names}>
-        <Form.Item label={'内容'}>
-
-          <Preview readOnly={false} text={'1<script>alert(1)</script>'} />
-         
-         
+      {readOnly ? <Preview readOnly={readOnly} text={'no data'} /> : undefined}
+      {readOnly ? undefined : <Form
+        name="form-generator"
+        layout="vertical"
+        onFinish={onFinish}
+      >
+        <Form.Item
+          key={'title'}
+          label={'标题'}
+          name={'title'}
+        >
+          <Input />
         </Form.Item>
 
-      </FormGenerator>
+        <Form.Item
+          key={'description'}
+          label={'描述'}
+          name={'description'}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          key={'content'}
+          label={'内容'}
+          name={'content'}
+        >
+          <Preview readOnly={readOnly} callback={(val) => {
+            console.log(val)
+            setContent(val)
+          }} />
+        </Form.Item>
+
+
+        <Form.Item
+          key={'tags'}
+          label={'标签'}>
+          {tags.map(tag => (
+            <Button
+              key={tag.id}
+              type={selectedTags.includes(tag.id) ? 'primary' : 'default'}
+              onClick={() => handleTagClick(tag.id)}
+              style={{ margin: 5 }}
+            >
+              {tag.name}
+            </Button>
+          ))}
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            提交
+          </Button>
+        </Form.Item>
+      </Form>}
+
+
     </div>
   );
 }

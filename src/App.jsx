@@ -21,8 +21,8 @@ function App() {
             <Route index element={<Suspense fallback={<Spin/>}><Home /></Suspense>} />
             <Route path={router.login} element={<Suspense fallback={<Spin/>}><Login /></Suspense>} />
             <Route path={router.register} element={<Suspense fallback={<Spin/>}><Register /></Suspense>} />
-            <Route path={`/${router.user}/*`} element={<Suspense fallback={<Spin/>}><User /></Suspense>} />
-            <Route path={`/${router.blog}/*`} element={<Suspense fallback={<Spin/>}><Blog /></Suspense>} />
+            <Route path={`/${router.users}/*`} element={<Suspense fallback={<Spin/>}><User /></Suspense>} />
+            <Route path={`/${router.blogs}/*`} element={<Suspense fallback={<Spin/>}><Blog /></Suspense>} />
             <Route path="*" element={<Suspense fallback={<Spin/>}><NotFound /></Suspense>} />
           </Route>
         </Routes>

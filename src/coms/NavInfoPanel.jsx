@@ -46,7 +46,7 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
     userCenter: ({id}) => {
       // 处理个人信息的回调函数
       try {
-        navigate(`${router.user}/${id}`)
+        navigate(`${router.users}/${id}`)
       } catch (error) {
 
       }
@@ -56,7 +56,7 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
       try {
         const unixTimestamp = Math.floor(Date.now() / 1000);
 
-        navigate(`${router.blogCreate}/${unixTimestamp}`)
+        navigate(`${router.blogs}/create/${unixTimestamp}`)
       } catch (error) {
 
       }

@@ -1,12 +1,13 @@
 const axios = require('axios');
 
-async function createArticle(title, description, content, authorId) {
+async function createArticle(title, description, content,tags, authorId) {
   try {
-    const response = await axios.post('/blog', {
+    const response = await axios.post('/blogs', {
       title,
       description,
       content,
       authorId,
+      tags
     });
     return response.data;
   } catch (error) {

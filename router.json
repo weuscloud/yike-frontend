@@ -1,8 +1,8 @@
 {
     "login": "/login",
-    "blog": "/blog",
-    "blogCreate":"/blog/create",
-    "user": "/user",
+    "blogs": "/blogs",
+    "users": "/users",
     "register": "/register",
-    "home":"/"
+    "home":"/",
+    "tags":"/tags"
 }

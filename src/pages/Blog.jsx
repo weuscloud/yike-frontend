@@ -5,16 +5,18 @@ import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
 import { useEffect } from "react";
-import { useBack } from '../../hooks/useBack';
-import useOperationAndId from "../../hooks/useOperationAndId";
+import { useBack } from '../hooks/useBack';
+import useOperationAndId from "../hooks/useOperationAndId";
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import router from '../../router.json'
 import LeftBar from '../coms/VerticalMenu';
 import Editor from '../coms/Editor';
 function Blog({ token, bgColor,darkMode }) {
+
   const nav=useNavigate();
   const { operation, id } = useOperationAndId();
+
   const back = useBack()
   useEffect(() => {
     //illegal
