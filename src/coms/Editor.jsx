@@ -1,12 +1,35 @@
 import React, { useState } from 'react';
-import { connect } from "react-redux";
-import { Input, Form, Button } from 'antd';
+import { connect, useSelector } from "react-redux";
+import { Input, Form, Button, message } from 'antd';
 import Preview from './Preview';
 import useTopTags from "../hooks/useTopTags";
+import {createArticle} from '../api/blog';
+function throttle(func, delay) {
+  let timer = null;
+  let lastExecTime = 0;
+  return function(...args) {
+    const now = Date.now();
+    const remainingTime = delay - (now - lastExecTime);
+    if (remainingTime <= 0) {
+      lastExecTime = now;
+      clearTimeout(timer);
+      func.apply(this, args);
+    } else if (!timer) {
+      timer = setTimeout(() => {
+        lastExecTime = Date.now();
+        timer = null;
+        func.apply(this, args);
+      }, remainingTime);
+    }
+  }
+}
 
-function RichTextEditor({ readOnly, bgColor, darkMode, primaryColor, textColor }) {
+function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
+
   //content
   const [content, setContent] = useState('');
+  const token = useSelector(state => state.app.token);
+
   //tags
   const tags = useTopTags();
   const [selectedTags, setSelectedTags] = useState([]);
@@ -17,18 +40,29 @@ function RichTextEditor({ readOnly, bgColor, darkMode, primaryColor, textColor }
       setSelectedTags([...selectedTags, tag]);
     }
   };
-  const onFinish = (fm) => {
+
+  const onFinish = async(fm) => {
     delete fm.content;
-    const form = { tags:selectedTags,content, ...fm };
-    console.log(form)
+    const { user} = JSON.parse(atob(token.split('.')[1]));
+    const form = { authorId:user.id,tags: selectedTags, content, title:fm.title,description:fm.description };
+    Object.keys(form).forEach(key=>{
+      if(typeof form[key]!=='string'||form[key].length==0)
+      
+      return;
+    })
+    try {
+      const {id}=await createArticle(form);
+      message.success(`创建文章${id}成功`);
+    } catch (error) {
+      message.success("创建文章失败");
+    }
   }
   return (
     <div style={{ padding: '2rem', backgroundColor: darkMode ? textColor : bgColor }}>
-      {readOnly ? <Preview readOnly={readOnly} text={'no data'} /> : undefined}
-      {readOnly ? undefined : <Form
+      <Form
         name="form-generator"
         layout="vertical"
-        onFinish={onFinish}
+        onFinish={throttle(onFinish,1000)}
       >
         <Form.Item
           key={'title'}
@@ -51,8 +85,7 @@ function RichTextEditor({ readOnly, bgColor, darkMode, primaryColor, textColor }
           label={'内容'}
           name={'content'}
         >
-          <Preview readOnly={readOnly} callback={(val) => {
-            console.log(val)
+          <Preview readOnly={false} callback={(val) => {
             setContent(val)
           }} />
         </Form.Item>
@@ -78,8 +111,7 @@ function RichTextEditor({ readOnly, bgColor, darkMode, primaryColor, textColor }
             提交
           </Button>
         </Form.Item>
-      </Form>}
-
+      </Form>
 
     </div>
   );

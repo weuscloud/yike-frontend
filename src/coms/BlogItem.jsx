@@ -1,10 +1,11 @@
-import { LikeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
+import { LikeOutlined,EyeOutlined, MessageOutlined, StarOutlined } from "@ant-design/icons";
 import { Col, List, Skeleton } from "antd";
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Row } from "antd";
 import Layout from "./TwoColLayout";
+import router from '../../router.json';
 const IconText = ({ icon, text, textColor }) => (
   <>
     <span style={{ color: textColor }}>
@@ -18,68 +19,76 @@ const IconText = ({ icon, text, textColor }) => (
   </>
 );
 
-const BlogItem = ({ item, loading, darkMode,primaryColor, bgColor, textColor }) => (
-  <Row>
-    <Col  style={{marginBottom:'1rem',borderBottom:darkMode?"":`1px solid ${primaryColor}`,padding: "1rem 2rem" , color: textColor, backgroundColor: bgColor }} xs={24} md={24}>
-      <Skeleton loading={loading} active>
-        <Layout
-          LeftChild={() => (
-            <List.Item
-              key={item.title}
-              actions={
-                !loading
-                  ? [
+const BlogItem = ({ item, loading, darkMode,primaryColor, bgColor, textColor }) => {
+const {id,title,description,avatarUrl,views,likes,favorites,commentsCount,updatedAt}=item;
+  return (
+    <Row>
+      
+      <Col  style={{marginBottom:'1rem',borderBottom:darkMode?"":`1px solid ${primaryColor}`,padding: "1rem 2rem" , color: textColor, backgroundColor: bgColor }} xs={24} md={24}>
+        <Skeleton loading={loading} active>
+          <Layout
+            LeftChild={() => (
+              <List.Item
+                key={'title'}
+                actions={
+                  !loading
+                    ? [ 
+                    <IconText
+                      textColor={textColor}
+                      icon={EyeOutlined}
+                      text={views}
+                      key="list-vertical-like-o"
+                    />,
                       <IconText
-                        textColor={textColor}
-                        icon={StarOutlined}
-                        text="156"
-                        key="list-vertical-star-o"
-                      />,
-                      <IconText
-                        textColor={textColor}
-                        icon={LikeOutlined}
-                        text="156"
-                        key="list-vertical-like-o"
-                      />,
-                      <IconText
-                        textColor={textColor}
-                        icon={MessageOutlined}
-                        text="2"
-                        key="list-vertical-message"
-                      />,
-                    ]
-                  : undefined
-              }
-            >
-              <List.Item.Meta
-                title={
-                  <span style={{ color: textColor, fontSize: "1.2rem" }}>
-                    <Link to={`/blog/${item.id}`}>{item.title}</Link>
-                  </span>
+                          textColor={textColor}
+                          icon={LikeOutlined}
+                          text={likes}
+                          key="list-vertical-like-o"
+                        />,
+                        <IconText
+                          textColor={textColor}
+                          icon={StarOutlined}
+                          text={favorites}
+                          key="list-vertical-star-o"
+                        />,
+                        
+                        <IconText
+                          textColor={textColor}
+                          icon={MessageOutlined}
+                          text={commentsCount}
+                          key="list-vertical-message"
+                        />,
+                      ]
+                    : undefined
                 }
-                description={
-                  <span style={{ color: textColor, fontSize: "0.8rem" }}>
-                    {item.description}
-                  </span>
-                }
-              />
-              <span style={{ color: textColor, fontSize: "1.0rem" }}>
-                {item.content}
-              </span>
-            </List.Item>
-          )}
-          RightChild={() =>
-            loading ? undefined : (
-             <div style={{height:"100%",maxHeight:"18rem"}} className="Flex-Center">
-               <img  style={{width:"100%",opacity:darkMode?".7":"1"}} alt="logo" src={item.avatarUrl} />
-             </div>
-            )
-          }
-        />
-      </Skeleton>
-    </Col>
-  </Row>
-);
+              >
+                <List.Item.Meta
+                  title={
+                    <span style={{ color: textColor, fontSize: "1.2rem" }}>
+                      <Link to={`${router.blogs}/${id}`}>{title}</Link>
+                    </span>
+                  }
+                  description={
+                    <span style={{ color: textColor, fontSize: "0.8rem" }}>
+                      {description}
+                    </span>
+                  }
+                />
+              </List.Item>
+            )}
+            RightChild={() =>
+              loading ? undefined : (
+               <div style={{height:"100%",maxHeight:"18rem"}} className="Flex-Center">
+                 <img  style={{width:"100%",opacity:darkMode?".7":"1"}}  src={item.avatarUrl} />
+               </div>
+              )
+            }
+          />
+        </Skeleton>
+      </Col>
+    </Row>
+  )
+};
 
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,

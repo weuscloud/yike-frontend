@@ -17,12 +17,12 @@ const items = [
     label: '个人中心',
   },
   {
-    key: 'logOut',
-    label: '退出登录',
+    key: 'articleCenter',
+    label: '文章中心',
   },
   {
-    key: 'goodBye',
-    label: '注销账号',
+    key: 'logOut',
+    label: '退出登录',
   },
 ];
 function decodeJWT(payload) {
@@ -69,9 +69,9 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
 
       }
     },
-    goodBye: ({id}) => {
+    articleCenter: ({id}) => {
       try {
-        navigate(`${router.user}/delete/${id}`)
+        navigate(`${router.blogs}`)
       } catch (error) {
 
       }

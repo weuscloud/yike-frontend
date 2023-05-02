@@ -1,45 +1,67 @@
 import { connect } from "react-redux";
-import "../css/Blog.css";
 import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
-import { useEffect } from "react";
 import { useBack } from '../hooks/useBack';
 import useOperationAndId from "../hooks/useOperationAndId";
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import router from '../../router.json'
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+
 import LeftBar from '../coms/VerticalMenu';
 import Editor from '../coms/Editor';
-function Blog({ token, bgColor,darkMode }) {
 
-  const nav=useNavigate();
+import router from '../../router.json'
+import "../css/Blog.css";
+import Preview from "../coms/Preview";
+
+// blogCenter,show all blogs-->/
+// read only,reading one blog   -->/123456789
+// edit mode,create/update/delete -->op/123456789
+function Blog({ token, bgColor, darkMode }) {
+
+  const nav = useNavigate();
   const { operation, id } = useOperationAndId();
+  const { '*': path } = useParams();
+  const back = useBack();
 
-  const back = useBack()
   useEffect(() => {
     //illegal
-    if(!operation&&!id)
+    if (!operation && !id && path.length > 0)
       back();
     //no token but op
-    if(operation&&!token)
-     nav(router.login);
+    if (operation && !token)
+      nav(router.login);
   }, [token]);
 
-  return (
-    <Row  className={classNames("Flex-Center", "margin-top-bottom")}>
+  //blogCenter
+  if (path.length == 0&&token) {
+    return (<Row className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20} >
-      <TwoColLayout
-        rightCol={19}
-          LeftChild={() => (
-            <>
-           <LeftBar/>
-              </>)}
-          RightChild={() => (
-            <Editor/>
-          )}
+        <TwoColLayout
+          rightCol={19}
+          LeftChild={() => (<LeftBar location={'article'} operation={operation} />)}
+          RightChild={()=><>blog-center</>}
         />
+      </Col>
+    </Row>)
+  }
+
+  return (
+    <Row className={classNames("Flex-Center", "margin-top-bottom")}>
+      <Col xs={24} md={20} >
+        {operation ? (
+          <TwoColLayout
+            rightCol={19}
+            LeftChild={() => (<LeftBar location={'article'} operation={operation} />)}
+            RightChild={() => (<Editor readOnly={false} />)}
+          />) : (
+          <TwoColLayout
+            rightCol={6}
+            LeftChild={() => (<Preview readOnly={true} />)}
+            RightChild={() => (<></>)}
+          />)
+        }
       </Col>
     </Row>
   );
@@ -48,7 +70,7 @@ function Blog({ token, bgColor,darkMode }) {
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,
   token: state.app.token,
-  bgColor:state.theme[state.app.theme].bgColor
+  bgColor: state.theme[state.app.theme].bgColor
 });
 
 const mapDispatchToProps = {
