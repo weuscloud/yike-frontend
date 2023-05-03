@@ -1,31 +1,36 @@
-import { List, Spin } from "antd";
+import { List } from "antd";
 import BlogItem from "./BlogItem";
-import { getPOPArticles } from "../api/blog";
+import { getPOPArticles, getArticles } from "../api/blog";
 import { useEffect, useState } from "react";
 
-const BlogList = () => {
+const BlogList = ({ pop }) => {
   const [listData, setListData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getPOPArticles();
-      setListData(res);
-      setLoading(false);
+      if (pop === true) {
+        const res = await getPOPArticles();
+        setListData(res);
+        setLoading(false);
+        return;
+      } else {
+        const res = await getArticles();
+        setListData(res);
+        setLoading(false);
+        return;
+      }
     };
     fetchData();
   }, []);
 
   return (
-    <Spin spinning={loading}>
-      <List
-        className="margin-top-bottom"
-        itemLayout="vertical"
-        size="large"
-        dataSource={listData}
-        renderItem={(item) => <BlogItem item={item} />}
-      />
-    </Spin>
+    <List
+      itemLayout="vertical"
+      size="large"
+      dataSource={listData}
+      renderItem={(item) => <BlogItem item={item} />}
+    />
   );
 };
 

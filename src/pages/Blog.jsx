@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
-import AuthorCard from "../coms/AuthorCard";
+import BlogList from '../coms/BlogList';
 import classNames from "classnames";
 import { useBack } from '../hooks/useBack';
 import useOperationAndId from "../hooks/useOperationAndId";
@@ -26,12 +26,29 @@ function Blog({ token, bgColor, darkMode }) {
   const back = useBack();
 
   useEffect(() => {
+    //blog center
+    if(path.length ==0&&!token)
+    {
+      nav(router.login);
+      return;
+    }
+    //reading
+    if(!operation &&id>0&&id<1e9)
+    {
+      return;
+    }
     //illegal
-    if (!operation && !id && path.length > 0)
+    if (!operation && !id&&path.length>0)
+     {
       back();
+      return;
+     }
     //no token but op
     if (operation && !token)
+    {
       nav(router.login);
+      return;
+    }
   }, [token]);
 
   //blogCenter
@@ -41,7 +58,7 @@ function Blog({ token, bgColor, darkMode }) {
         <TwoColLayout
           rightCol={19}
           LeftChild={() => (<LeftBar location={'article'} operation={operation} />)}
-          RightChild={()=><>blog-center</>}
+          RightChild={()=><BlogList pop={false}/>}
         />
       </Col>
     </Row>)
@@ -53,12 +70,12 @@ function Blog({ token, bgColor, darkMode }) {
         {operation ? (
           <TwoColLayout
             rightCol={19}
-            LeftChild={() => (<LeftBar location={'article'} operation={operation} />)}
-            RightChild={() => (<Editor readOnly={false} />)}
+            LeftChild={() => (<LeftBar />)}
+            RightChild={() => (<Editor id={id} readOnly={false} />)}
           />) : (
           <TwoColLayout
             rightCol={6}
-            LeftChild={() => (<Preview readOnly={true} />)}
+            LeftChild={() => (<Preview articleId={id} readOnly={true} />)}
             RightChild={() => (<></>)}
           />)
         }

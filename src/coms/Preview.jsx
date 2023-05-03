@@ -5,31 +5,30 @@ import 'quill/dist/quill.snow.css';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import '../css/Preview.css';
-import useOperationAndId from "../hooks/useOperationAndId";
 import { getArticle } from "../api/blog";
 import { Spin } from 'antd';
-const Preview = ({ callback, readOnly, text, bgColor, darkMode, }) => {
-    const [loading, setLoading] = useState(true);
+const Preview = ({ articleId, callback, readOnly, text, bgColor, darkMode, }) => {
+
     const [content, setContent] = useState(text);
-    const { operation, id } = useOperationAndId();
-    readOnly = !operation ? true : false;
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        setContent(text)
+        setLoading(false)
+    }, [text])
     useEffect(() => {
         const fetchData = async () => {
-          if(id&&id>0&&id<1e9){
-            const article = await getArticle(id);
-            setContent(article.content || '');
-            setLoading(false)
-          }else{
-            setLoading(false)
-          }
+            const art = await getArticle({ id: articleId, content })
+            setContent(art.content)
         }
-        fetchData()
+        if (readOnly) {
+            fetchData()
+        }
     }, [])
     return (
-      <Spin spinning={loading}>
-        <ReactQuill
+        <Spin spinning={loading}>
+            <ReactQuill
                 style={{ backgroundColor: darkMode ? '#fff' : bgColor }}
-                className={classNames(readOnly === true ? 'non-active' : '')}
+
                 theme="snow"
                 value={content}
                 onChange={(value) => {
@@ -55,7 +54,7 @@ const Preview = ({ callback, readOnly, text, bgColor, darkMode, }) => {
                     },
                 }}
             />
-      </Spin>
+        </Spin>
     );
 };
 

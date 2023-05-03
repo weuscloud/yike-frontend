@@ -1,38 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from "react-redux";
-import { Input, Form, Button, message } from 'antd';
+import { Input, Form, Button, message, Spin } from 'antd';
 import Preview from './Preview';
 import useTopTags from "../hooks/useTopTags";
-import {createArticle} from '../api/blog';
-function throttle(func, delay) {
-  let timer = null;
-  let lastExecTime = 0;
-  return function(...args) {
-    const now = Date.now();
-    const remainingTime = delay - (now - lastExecTime);
-    if (remainingTime <= 0) {
-      lastExecTime = now;
-      clearTimeout(timer);
-      func.apply(this, args);
-    } else if (!timer) {
-      timer = setTimeout(() => {
-        lastExecTime = Date.now();
-        timer = null;
-        func.apply(this, args);
-      }, remainingTime);
-    }
-  }
-}
+import { createArticle, getArticle ,updateArticle} from '../api/blog';
+import { throttle } from '../hooks/utils';
+import useOperationAndId from '../hooks/useOperationAndId';
 
-function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
+function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
 
-  //content
-  const [content, setContent] = useState('');
-  const token = useSelector(state => state.app.token);
+  
+  const [loading, setLoading] = useState(true);
 
+  const [title, updateTitle] = useState('');
+  const [description, updateDesc] = useState('');
+  const [content, updateContent] = useState('');
   //tags
   const tags = useTopTags();
   const [selectedTags, setSelectedTags] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ar = await getArticle({id,title,description,content});
+     updateTitle(ar.title);
+     updateDesc(ar.description);
+     updateContent(ar.content);
+     setLoading(false);
+    }
+    if (id > 0 && id < 1e9 ) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const { operation } = useOperationAndId();
+
   const handleTagClick = tag => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag));
@@ -40,21 +43,40 @@ function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
       setSelectedTags([...selectedTags, tag]);
     }
   };
+  const EditorObj = {
+    'create': async (form) => {
+      try {
+        const { id, message: msg } = await createArticle(form);
 
-  const onFinish = async(fm) => {
+        if (msg) {
+          message.error(`文章创建失败[${msg}]`);
+        } else {
+          message.success(`文章创建成功[${id}]`);
+        }
+      } catch (error) {
+        message.error("文章创建失败");
+      }
+    }
+    ,
+    'update': async (form) => {
+      const { id:cbId } = await updateArticle({id,...form});
+
+      if (cbId) {
+        message.success(`文章编辑成功[${cbId}]`);
+      } else {
+        message.error(`文章编辑失败`);
+      }
+    }
+  }
+  const onFinish = async (fm) => {
     delete fm.content;
-    const { user} = JSON.parse(atob(token.split('.')[1]));
-    const form = { authorId:user.id,tags: selectedTags, content, title:fm.title,description:fm.description };
-    Object.keys(form).forEach(key=>{
-      if(typeof form[key]!=='string'||form[key].length==0)
-      
-      return;
+    const form = { tags: selectedTags, content, title: fm.title, description: fm.description };
+    Object.keys(form).forEach(key => {
+      if (typeof form[key] !== 'string' || form[key].length == 0)
+        return;
     })
-    try {
-      const {id}=await createArticle(form);
-      message.success(`创建文章${id}成功`);
-    } catch (error) {
-      message.success("创建文章失败");
+    if (typeof EditorObj[operation] === 'function') {
+      EditorObj[operation](form)
     }
   }
   return (
@@ -62,14 +84,18 @@ function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
       <Form
         name="form-generator"
         layout="vertical"
-        onFinish={throttle(onFinish,1000)}
+        onFinish={throttle(onFinish, 1000)}
       >
         <Form.Item
           key={'title'}
           label={'标题'}
           name={'title'}
         >
-          <Input />
+          <Spin spinning={loading}>
+            <Input value={title} onChange={(e) => {
+              updateTitle(e.target.value)
+            }} />
+          </Spin>
         </Form.Item>
 
         <Form.Item
@@ -77,7 +103,12 @@ function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
           label={'描述'}
           name={'description'}
         >
-          <Input />
+          <Spin spinning={loading}>
+            <Input value={description} onChange={(e) => {
+              updateDesc(e.target.value)
+
+            }} />
+          </Spin>
         </Form.Item>
 
         <Form.Item
@@ -85,8 +116,8 @@ function RichTextEditor({ bgColor, darkMode, primaryColor, textColor }) {
           label={'内容'}
           name={'content'}
         >
-          <Preview readOnly={false} callback={(val) => {
-            setContent(val)
+          <Preview id={id} text={content} readOnly={false} callback={(val) => {
+            updateContent(val)
           }} />
         </Form.Item>
 
@@ -121,8 +152,8 @@ const mapStateToProps = (state) => ({
   bgColor: state.theme[state.app.theme].bgColor,
   primaryColor: state.theme[state.app.theme].primaryColor,
   textColor: state.theme[state.app.theme].textColor,
+
 });
 const mapDispatchToProps = {
-
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RichTextEditor);

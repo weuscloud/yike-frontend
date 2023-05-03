@@ -2,11 +2,12 @@ import { Dropdown, Avatar } from 'antd';
 import { connect } from "react-redux";
 import { updateToken } from '../store/app';
 import { Menu } from "antd";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import router from '../../router.json';
 import { message } from 'antd';
-
+import { getUserById } from '../api/user';
+import jwt_decode from 'jwt-decode';
 const items = [
   {
     key: 'writeArticle',
@@ -25,25 +26,34 @@ const items = [
     label: '退出登录',
   },
 ];
-function decodeJWT(payload) {
-  const decodedPayload = JSON.parse(atob(payload));
-  return decodedPayload;
-}
 
-const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
+
+const NavInfoPanel = ({ textColor, updateToken,darkMode, bgColor, token }) => {
 
   //use hooks before if statement
   const location = useLocation();
   const navigate = useNavigate();
-
+  const user =token? jwt_decode(token).user:{};
+  const {
+    name: username,
+    avatarUrl,
+    id,
+    updatedAt
+  } = user;
+  useEffect(()=>{
+    const fetchUser=async()=>{
+     const u=await getUserById(id);
+    if(u.updatedAt!==updatedAt){
+      updateToken({token:null})
+    }
+    }
+    fetchUser()
+  },[])
   //is login or regist page
   const isLoginPage = location.pathname === router.login || location.pathname === router.register;
-  if (isLoginPage) return null;
-  //has logined.
-  if (!token) return null;
-
+  if (!token||isLoginPage||!user) return <></>;
   const cb = {
-    userCenter: ({id}) => {
+    userCenter: ({ id }) => {
       // 处理个人信息的回调函数
       try {
         navigate(`${router.users}/${id}`)
@@ -63,13 +73,14 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
     },
     logOut: () => {
       try {
+        console.log('exit')
         updateToken({ token: null })
         message.success(`退出登录成功`);
       } catch (error) {
 
       }
     },
-    articleCenter: ({id}) => {
+    articleCenter: ({ id }) => {
       try {
         navigate(`${router.blogs}`)
       } catch (error) {
@@ -78,16 +89,9 @@ const NavInfoPanel = ({ textColor, darkMode, bgColor, updateToken, token }) => {
     }
   };
 
- 
-  const {
-    name: username,
-    avatarUrl,
-    id
-  } = decodeJWT(token.split('.')[1]).user;
-  if (username.length == 0) return null;
   const handleMenuClick = (e) => {
     if (typeof cb[e.key] === 'function')
-      cb[e.key]({id})
+      cb[e.key]({ id })
   }
   return (
     <Menu.Item
@@ -115,7 +119,7 @@ const mapStateToProps = (state) => ({
   bgColor: state.theme[state.app.theme].bgColor,
   textColor: state.theme[state.app.theme].textColor,
   darkMode: state.app.darkMode,
-  token: state.app.token
+  token: state.app.token,
 });
 const mapDispatchToProps = {
   updateToken

@@ -16,7 +16,7 @@ function Home({ darkMode, toggleDarkMode }) {
           LeftChild={() => (
             <>
             <Carousel/>
-              <BlogList />
+              <BlogList pop />
               </>)}
           RightChild={() => (
             <AuthorCard

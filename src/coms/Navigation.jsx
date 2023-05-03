@@ -19,9 +19,9 @@ import classNames from "classnames";
 import useTopTags from "../hooks/useTopTags";
 import router from '../../router.json'
 const { Search } = Input;
-const Navigation = ({ darkMode, toggleDarkMode }) => {
+const Navigation = ({ darkMode, token, toggleDarkMode }) => {
 
-  const topTags=useTopTags();
+  const topTags = useTopTags();
   return (
     <Menu
       defaultSelectedKeys={['home']}
@@ -40,10 +40,10 @@ const Navigation = ({ darkMode, toggleDarkMode }) => {
       </Menu.Item>
       {topTags && topTags.map((tag) => (
         <Menu.Item className={classNames('inlineBlock')} key={tag.id}>
-           <Link to={`${router.tags}/${tag.id}`}>
-           {tag.name}
-        </Link>
-          </Menu.Item>
+          <Link to={`${router.tags}/${tag.id}`}>
+            {tag.name}
+          </Link>
+        </Menu.Item>
       ))}
       <Menu.Item style={{ backgroundColor: "transparent" }} key="search">
         <Search
@@ -53,8 +53,8 @@ const Navigation = ({ darkMode, toggleDarkMode }) => {
           size="small"
         />
       </Menu.Item>
-      <NavInfoPanel />
-      <NavloginPanel />
+      {token ? <NavInfoPanel /> :
+        <NavloginPanel />}
       <Menu.Item
         key="darkmode"
         style={{ backgroundColor: "transparent", display: "inline-block" }}
