@@ -23,10 +23,9 @@ const BlogList = ({channel, data,edit,id }) => {
         setLoading(false);
         return;
       } 
-      if(channel==='tags'){
+      if(channel==='tags'&&id){
     
         const res = await getTagArticles({id});
-        console.log('articleID',res)
         setListData(res);
         setLoading(false);
         return;

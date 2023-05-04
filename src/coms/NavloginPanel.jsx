@@ -8,11 +8,12 @@ import {setModalVisible } from "../store/app";
 import { useState } from "react";
 import { Menu } from "antd";
 import router from '../../router.json';
-const NavloginPanel = ({token,setModalVisible}) => {
+const NavloginPanel = ({token}) => {
 
   //is login or regist page
   const location = useLocation();
   const [formType, setFormType] = useState('login');
+  const [visible,setModalVisible]=useState(false);
   const isLoginPage = location.pathname === router.login || location.pathname === router.register ;
   if(isLoginPage)return null;
   //has logined.
@@ -39,7 +40,7 @@ const NavloginPanel = ({token,setModalVisible}) => {
       >
         登录
       </Button>
-      <Modal>
+      <Modal visibleChange={(visible)=>setModalVisible(visible)} visible={visible}>
         <AuthForm callback={(res) => {
           if (res.status === 200) {
             setModalVisible(false);
@@ -64,6 +65,5 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  setModalVisible,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(NavloginPanel);
