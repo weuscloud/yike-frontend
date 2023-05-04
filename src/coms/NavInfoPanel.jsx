@@ -13,10 +13,10 @@ const items = [
     key: 'writeArticle',
     label: '写文章',
   },
-  {
-    key: 'userCenter',
-    label: '个人中心',
-  },
+  // {
+  //   key: 'userCenter',
+  //   label: '个人中心',
+  // },
   {
     key: 'articleCenter',
     label: '文章中心',
