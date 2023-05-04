@@ -62,7 +62,7 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
       return window.articleCount;
     };
     const timer = setTimeout(() => {
-      fetchData();
+      if(id)fetchData();
 
     }, getRandomDelay())
 

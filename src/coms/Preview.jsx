@@ -20,7 +20,7 @@ const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textCo
             const art = await getArticle({ id: articleId, content,viewed })
             setContent(art.content)
         }
-        if (readOnly) {
+        if (readOnly&&articleId) {
             fetchData()
         }
     }, [])

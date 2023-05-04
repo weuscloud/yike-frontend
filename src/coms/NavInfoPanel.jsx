@@ -47,7 +47,7 @@ const NavInfoPanel = ({ textColor, updateToken,darkMode, bgColor, token }) => {
       updateToken({token:null})
     }
     }
-    fetchUser()
+    if(id)fetchUser()
   },[])
   //is login or regist page
   const isLoginPage = location.pathname === router.login || location.pathname === router.register;

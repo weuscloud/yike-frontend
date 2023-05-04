@@ -13,7 +13,7 @@ const AuthorCard = ({ id, textColor, bgColor }) => {
       const a=await getUser({id,name, avatarUrl,bio})
       updateAuthor(a);
     }
-    fetchData();
+    if(id)fetchData();
   },[])
   return (
     <Card style={{ border: 0, borderRadius: 0, backgroundColor: bgColor }}>
