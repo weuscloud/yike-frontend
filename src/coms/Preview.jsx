@@ -27,7 +27,7 @@ const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textCo
     return (
         <Spin spinning={loading}>
             <ReactQuill
-                style={{ backgroundColor: 'transparent'  }}
+                style={{color:textColor, backgroundColor: 'transparent'  }}
                 className={classNames(borderless?'borderless':'')}
                 theme="snow"
                 value={content}
@@ -59,7 +59,7 @@ const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textCo
 };
 
 const mapStateToProps = (state) => ({
-
+    textColor: state.theme[state.app.theme].textColor,
     bgColor: state.theme[state.app.theme].bgColor,
     darkMode: state.app.darkMode,
     primaryColor: state.theme[state.app.theme].primaryColor,
