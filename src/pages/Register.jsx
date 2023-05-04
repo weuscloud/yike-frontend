@@ -7,7 +7,7 @@ import classNames from "classnames";
 import TwoColLayout from "../coms/TwoColLayout";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useBack } from "../../hooks/useBack";
+import { useBack } from "../hooks/useBack";
 
 function Register({ token, darkMode }) {
 

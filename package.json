@@ -1,7 +1,7 @@
 {
   "name": "antd-yike",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "record": "000000000",
   "scripts": {
     "dev": "vite",
