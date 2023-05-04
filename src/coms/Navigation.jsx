@@ -14,7 +14,6 @@ import { toggleDarkMode, setModalVisible } from "../store/app";
 import { connect } from "react-redux";
 import NavInfoPanel from './NavInfoPanel';
 import NavloginPanel from "./NavloginPanel";
-import { getTopTags } from '../api/tag';
 import classNames from "classnames";
 import useTopTags from "../hooks/useTopTags";
 import router from '../../router.json'
@@ -38,13 +37,13 @@ const Navigation = ({ darkMode, token, toggleDarkMode }) => {
           <img src="/favicon.ico" alt="Logo" style={{ height: 30 }} />
         </Link>
       </Menu.Item>
-      {topTags? topTags.map((tag) => (
+      {topTags ? topTags.map((tag) => (
         <Menu.Item className={classNames('inlineBlock')} key={tag.id}>
           <Link to={`${router.tags}/${tag.id}`}>
             {tag.name}
           </Link>
         </Menu.Item>
-      )):undefined}
+      )) : undefined}
       <Menu.Item style={{ backgroundColor: "transparent" }} key="search">
         <Search
           enterButton

@@ -9,7 +9,7 @@ import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
 import Carousel from "../coms/Carousel";
 import { useParams } from "react-router-dom";
-function Tag({ darkMode, toggleDarkMode }) {
+function Tag() {
   const { 'id': path } = useParams();
   return (
     <Row className={classNames("Flex-Center", "margin-top-bottom")}>
@@ -32,10 +32,9 @@ function Tag({ darkMode, toggleDarkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode,
 });
 
 const mapDispatchToProps = {
-  toggleDarkMode,
+
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Tag);

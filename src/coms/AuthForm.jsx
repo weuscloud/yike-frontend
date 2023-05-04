@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { register, login, getUser } from "../api/user";
+import { register, login } from "../api/user";
 import SAFE from 'crypto-js';
 import { updateToken } from '../store/app'
 import { message } from 'antd';

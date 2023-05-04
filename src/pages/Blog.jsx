@@ -13,12 +13,10 @@ import Editor from '../coms/Editor';
 import Reader from '../coms/Reader';
 import router from '../../router.json'
 import "../css/Blog.css";
-import Preview from "../coms/Preview";
 
-// blogCenter,show all blogs-->/
-// read only,reading one blog   -->/123456789
-// edit mode,create/update/delete -->op/123456789
-function Blog({ token, bgColor, darkMode }) {
+
+
+function Blog({ token }) {
 
   const nav = useNavigate();
   const { operation, id } = useOperationAndId();
@@ -68,9 +66,7 @@ function Blog({ token, bgColor, darkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode,
   token: state.app.token,
-  bgColor: state.theme[state.app.theme].bgColor
 });
 
 const mapDispatchToProps = {

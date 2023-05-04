@@ -8,7 +8,7 @@ import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
 import Carousel from "../coms/Carousel";
-function Home({ darkMode, toggleDarkMode }) {
+function Home() {
   return (
     <Row className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20}>
@@ -30,7 +30,6 @@ function Home({ darkMode, toggleDarkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode,
 });
 
 const mapDispatchToProps = {

@@ -1,9 +1,8 @@
 
 import { connect } from 'react-redux';
 import { Button } from 'antd';
-import { toggleDarkMode } from '../store/app';
 import '../css/NotFound.css';
-function NotFound({ darkMode, toggleDarkMode }) {
+function NotFound() {
       return (
         <div>
           <h1>NotFound</h1>
@@ -13,11 +12,11 @@ function NotFound({ darkMode, toggleDarkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode
+
 });
 
 const mapDispatchToProps = {
-  toggleDarkMode
+
 };
 export default connect(mapStateToProps,mapDispatchToProps)(NotFound);
   

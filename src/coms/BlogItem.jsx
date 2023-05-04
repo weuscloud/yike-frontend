@@ -71,61 +71,58 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
         <Skeleton loading={loading} active>
           <Layout
             LeftChild={() => (
-              <>
-                <List.Item
-                  key={'title'}
-                  actions={
-                    !loading
-                      ? [
-                        <IconText
-                          textColor={textColor}
-                          icon={EyeOutlined}
-                          text={views}
-                          key="list-vertical-like-o"
-                        />,
-                        <IconText
-                          textColor={textColor}
-                          icon={LikeOutlined}
-                          text={likes}
-                          key="list-vertical-like-o"
-                        />,
-                        <IconText
-                          textColor={textColor}
-                          icon={MessageOutlined}
-                          text={commentsCount}
-                          key="list-vertical-message"
-                        />,
+              <List.Item
+              key={'title'}
+              actions={
+                !loading
+                  ? [
+                    <IconText
+                      textColor={textColor}
+                      icon={EyeOutlined}
+                      text={views}
+                      key="list-vertical-like-o"
+                    />,
+                    <IconText
+                      textColor={textColor}
+                      icon={LikeOutlined}
+                      text={likes}
+                      key="list-vertical-like-o"
+                    />,
+                    <IconText
+                      textColor={textColor}
+                      icon={MessageOutlined}
+                      text={commentsCount}
+                      key="list-vertical-message"
+                    />,
 
-                        <IconText
-                          textColor={textColor}
-                          icon={StarOutlined}
-                          text={favorites}
-                          key="list-vertical-star-o"
-                        />,
-                      ]
-                      : undefined
-                  }
-                >
-                  <List.Item.Meta
-                    title={
-                      <span style={{ color: textColor, fontSize: "1.2rem" }}>
-                        <Link to={`${router.blogs}/${id}`}>{title}</Link>
-                      </span>
-                    }
-                    description={
-                      <span style={{ color: textColor, fontSize: "0.8rem" }}>
-                        {description}
-                      </span>
-                    }
-                  />
-                </List.Item>
-
-              </>
+                    <IconText
+                      textColor={textColor}
+                      icon={StarOutlined}
+                      text={favorites}
+                      key="list-vertical-star-o"
+                    />,
+                  ]
+                  : undefined
+              }
+            >
+              <List.Item.Meta
+                title={
+                  <span style={{ color: textColor, fontSize: "1.2rem" }}>
+                    <Link to={`${router.blogs}/${id}`}>{title}</Link>
+                  </span>
+                }
+                description={
+                  <span style={{ color: textColor, fontSize: "0.8rem" }}>
+                    {description}
+                  </span>
+                }
+              />
+            </List.Item>
             )}
             RightChild={() =>
               loading ? undefined : (
-                <div style={{ height: "100%", maxHeight: "18rem" }} className="Flex-Center">
-                  <img style={{ width: "100%", opacity: darkMode ? ".7" : "1" }} src={avatarUrl} />
+                <div style={{ overflow:"hidden" ,maxHeight: "15rem" }} className="Flex-Center">
+                  <img style={{ height: "100%", opacity: darkMode ? ".7" : "1" }} src={avatarUrl} />
                 </div>
               )
             }

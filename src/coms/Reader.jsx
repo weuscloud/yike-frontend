@@ -6,7 +6,7 @@ import "../css/Reader.css";
 import Preview from "./Preview";
 import AuthorCard from "./AuthorCard";
 
-function Reader({id, token, primaryColor,textColor,bgColor, darkMode }) {
+function Reader({id,bgColor, darkMode }) {
     if(!id)throw 'invalid used:Reader';
     return (
         <TwoColLayout
@@ -23,10 +23,7 @@ function Reader({id, token, primaryColor,textColor,bgColor, darkMode }) {
 
 const mapStateToProps = (state) => ({
     darkMode: state.app.darkMode,
-    token: state.app.token,
     bgColor: state.theme[state.app.theme].bgColor,
-    textColor: state.theme[state.app.theme].textColor,
-    primaryColor: state.theme[state.app.theme].primaryColor,
 });
 
 const mapDispatchToProps = {

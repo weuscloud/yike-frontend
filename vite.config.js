@@ -7,7 +7,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
+          react: ['react', 'react-dom'],
           antd: ['antd'],
+          axios: ['axios'],
         },
       },
     },

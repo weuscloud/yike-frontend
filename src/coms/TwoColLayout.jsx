@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import '../css/TwoColLayout.css';
 import classNames from 'classnames';
 
-const TwoColLayout = ({style,LeftChild,RightChild,rightCol,totalCol}) => {
+const TwoColLayout = ({LeftChild,RightChild,rightCol,totalCol}) => {
 
   rightCol=rightCol||8;
   totalCol=totalCol||24;

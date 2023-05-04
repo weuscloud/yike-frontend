@@ -1,16 +1,15 @@
 import { connect } from "react-redux";
 import "../css/User.css";
 import { Row, Col } from "antd";
-import TwoColLayout from "../coms/TwoColLayout";
-import AuthorCard from "../coms/AuthorCard";
+
 import classNames from "classnames";
 import { useEffect } from "react";
 import { useBack } from '../hooks/useBack';
 import useOperationAndId from "../hooks/useOperationAndId";
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import router from '../../router.json'
-function User({ token, bgColor,darkMode }) {
+function User({ token, bgColor }) {
   const nav=useNavigate();
   const { operation, id } = useOperationAndId();
   const back = useBack()

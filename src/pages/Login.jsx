@@ -1,4 +1,4 @@
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { toggleDarkMode } from "../store/app";
 import "../css/Login.css";
 import AuthForm from "../coms/AuthForm";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useBack } from '../hooks/useBack';
 
-function Login({ token, darkMode, toggleDarkMode }) {
+function Login({ token, darkMode }) {
  const back=useBack()
   useEffect(() => {
     if(token)

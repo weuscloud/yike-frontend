@@ -1,9 +1,8 @@
 import { Card, Avatar } from "antd";
-import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {getUser} from '../api/user';
-const AuthorCard = ({ id,token, textColor, bgColor }) => {
+const AuthorCard = ({ id, textColor, bgColor }) => {
 
   if(!id)throw 'invalid use:AuthorCard';
   const [author,updateAuthor]=useState({})
