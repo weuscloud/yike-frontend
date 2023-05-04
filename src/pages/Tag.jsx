@@ -18,7 +18,7 @@ function Tag() {
           LeftChild={() => (
             <>
             <Carousel/>
-              <BlogList id={parseInt(path)} channel={'tags'} />
+              <BlogList id={path} channel={'tags'} />
               </>)}
           RightChild={() => (
             <AuthorCard

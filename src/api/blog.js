@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import router from '../../router.json';
 const api = axios.create();
 
 api.interceptors.request.use(
@@ -24,7 +24,7 @@ api.interceptors.request.use(
 
 export async function createArticle({ title, description, content, tags }) {
   try {
-    const response = await api.post('/blogs', {
+    const response = await api.post(`${router.blogs}`, {
       title,
       description,
       content,
@@ -39,10 +39,10 @@ export async function createArticle({ title, description, content, tags }) {
 export async function getArticle(op) {
 
   if (typeof op !== 'object') throw 'invalid used.';
-  const id = parseInt(op.id);
+  const {id } = op;
   if (typeof id !== 'number') throw 'invalid used.';
   try {
-    let url = `/blogs/${id}?q=`;
+    let url = `${router.blogs}/${id}?q=`;
     Object.keys(op).forEach((key) => {
       url += `${key},`
     })
@@ -54,16 +54,15 @@ export async function getArticle(op) {
 }
 export async function getPOPArticles() {
   try {
-    const response = await api.get('/blogs/pop');
+    const response = await api.get(`${router.blogs}/pop`);
     return response.data;
   } catch (error) {
     console.error(error);
   }
 }
 export async function updateArticle({ id, title, description, content, tags }) {
-  id = parseInt(id)
   try {
-    const response = await api.put(`/blogs/${id}`, {
+    const response = await api.put(`${router.blogs}/${id}`, {
       title,
       description,
       content,
@@ -76,7 +75,7 @@ export async function updateArticle({ id, title, description, content, tags }) {
 }
 export async function deleteArticle(id) {
   try {
-    const response = await api.delete(`/blogs/${id}`);
+    const response = await api.delete(`${router.blogs}/${id}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -84,7 +83,7 @@ export async function deleteArticle(id) {
 }
 export async function getArticles() {
   try {
-    const res = await api.get(`/blogs`);
+    const res = await api.get(`${router.blogs}`);
     return res.data;
   } catch (error) {
     return {}
@@ -92,10 +91,10 @@ export async function getArticles() {
 }
 export async function getTagArticles(op){
   if (typeof op !== 'object') throw 'invalid used.';
-  const id = parseInt(op.id);
+  const {id } = op;
   if (typeof id !== 'number') throw 'invalid used.';
   try {
-    let url = `/blogs/tags/${id}?q=`;
+    let url = `${router.blogs}/tags/${id}?q=`;
     Object.keys(op).forEach((key) => {
       url += `${key},`
     })

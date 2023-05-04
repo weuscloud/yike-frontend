@@ -9,6 +9,8 @@ import router from '../../router.json';
 import { getArticle } from "../api/blog";
 import {throttle} from '../hooks/utils'
 import { deleteArticle } from "../api/blog";
+import { Modal } from 'antd';
+
 const IconText = ({ icon, text, textColor }) => (
   <>
     <span style={{ color: textColor }}>
@@ -21,7 +23,21 @@ const IconText = ({ icon, text, textColor }) => (
     </span>
   </>
 );
-
+const showConfirm = () => {
+  Modal.confirm({
+    title: '确认删除该条记录吗？',
+    okText: '确认',
+    cancelText: '取消',
+    onOk() {
+      // 当用户点击确认按钮时执行的操作
+      console.log('删除记录');
+    },
+    onCancel() {
+      // 当用户点击取消按钮时执行的操作
+      console.log('取消删除');
+    },
+  });
+};
 const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) => {
 
   const { id } = item;
@@ -55,7 +71,9 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
       clearTimeout(timer);
     };
   }, [])
+
   const onDelete=async(e)=>{
+    showConfirm();
    const status= await deleteArticle(id);
   if(status===204){
     message.success("删除成功");
@@ -131,6 +149,7 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
             <Button style={{margin:'0 1rem'}} type="primary" size="small" icon={<EditOutlined />} >
            <Link to={`${router.blogs}/update/${id}`}> 编辑</Link>
             </Button>
+            
             <Button type="primary" onClick={throttle(onDelete,1000)} size="small" icon={<DeleteOutlined />} >
               删除
             </Button>
