@@ -7,18 +7,20 @@ import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
-
-function Home({ darkMode, toggleDarkMode }) {
+import Carousel from "../coms/Carousel";
+function Home() {
   return (
-    <Row  className={classNames("Flex-Center","margin-top-bottom")}>
+    <Row className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20}>
         <TwoColLayout
-          LeftChild={() =>( <BlogList />)}
+          LeftChild={() => (
+            <>
+            <Carousel/>
+              <BlogList channel={'pop'} />
+              </>)}
           RightChild={() => (
             <AuthorCard
-              name="wangqicheng"
-              avatarUrl="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              bio="张三不爱学习！！！！！！！！！！！！！！！"
+              id={1}
             />
           )}
         />
@@ -28,7 +30,6 @@ function Home({ darkMode, toggleDarkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode,
 });
 
 const mapDispatchToProps = {

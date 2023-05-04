@@ -1,24 +1,28 @@
 import { connect } from "react-redux";
 import { toggleDarkMode } from "../store/app";
-import "../css/Home.css";
+import "../css/Tag.css";
 import BlogList from "../coms/BlogList";
 
 import { Row, Col } from "antd";
 import TwoColLayout from "../coms/TwoColLayout";
 import AuthorCard from "../coms/AuthorCard";
 import classNames from "classnames";
-
-function Tag({ darkMode, toggleDarkMode }) {
+import Carousel from "../coms/Carousel";
+import { useParams } from "react-router-dom";
+function Tag() {
+  const { 'id': path } = useParams();
   return (
-    <Row  className={classNames("Flex-Center","margin-top-bottom")}>
+    <Row className={classNames("Flex-Center", "margin-top-bottom")}>
       <Col xs={24} md={20}>
         <TwoColLayout
-          LeftChild={() => <BlogList />}
+          LeftChild={() => (
+            <>
+            <Carousel/>
+              <BlogList id={path} channel={'tags'} />
+              </>)}
           RightChild={() => (
             <AuthorCard
-              name="wangqicheng"
-              avatarUrl="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              bio="张三爱学习"
+              id={1}
             />
           )}
         />
@@ -28,10 +32,9 @@ function Tag({ darkMode, toggleDarkMode }) {
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.app.darkMode,
 });
 
 const mapDispatchToProps = {
-  toggleDarkMode,
+
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Tag);

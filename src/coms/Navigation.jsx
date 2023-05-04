@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Menu, Input, Button, Avatar } from "antd";
+import { Menu, Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
 import {
   HomeOutlined,
   ProfileOutlined,
@@ -8,35 +9,18 @@ import {
   BulbFilled,
   BulbOutlined,
 } from "@ant-design/icons";
-import "./Navigation.css";
+import "../css/Navigation.css";
 import { toggleDarkMode, setModalVisible } from "../store/app";
 import { connect } from "react-redux";
-import Modal from "./Modal";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import AuthForm from "./AuthForm";
+import NavInfoPanel from './NavInfoPanel';
+import NavloginPanel from "./NavloginPanel";
+import classNames from "classnames";
+import useTopTags from "../hooks/useTopTags";
+import router from '../../router.json'
 const { Search } = Input;
-const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
-  const {
-    phone,
-    email,
-    name:username,
-    avatarUrl,
-    id
-  } = token?token.user:{};
-  const [doLogIn, setDoLogIn] = useState(false);
-  const location = useLocation();
-  const isLoginPage = location.pathname.split('/')[1] === 'login' || location.pathname.split('/')[1] === 'regist';
-  const handleLogin = () => {
-    setDoLogIn(true);
-    setModalVisible(true);
+const Navigation = ({ darkMode, token, toggleDarkMode }) => {
 
-  };
-
-  const handleRegister = () => {
-    setDoLogIn(false);
-    setModalVisible(true);
-  };
+  const topTags = useTopTags();
   return (
     <Menu
       defaultSelectedKeys={['home']}
@@ -53,30 +37,13 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
           <img src="/favicon.ico" alt="Logo" style={{ height: 30 }} />
         </Link>
       </Menu.Item>
-      <Menu.Item key="home" style={{ display: "inline-block" }}>
-        <Link to="/">
-          <HomeOutlined />
-          主页
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="archive" style={{ display: "inline-block" }}>
-        <Link to="/archive">
-          <ProfileOutlined />
-          归档
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="tags" style={{ display: "inline-block" }}>
-        <Link to="/tags">
-          <TagOutlined />
-          标签
-        </Link>
-      </Menu.Item>
-      <Menu.Item key="about" style={{ display: "inline-block" }}>
-        <Link to="/about">
-          <InfoCircleOutlined />
-          关于
-        </Link>
-      </Menu.Item>
+      {topTags ? topTags.map((tag) => (
+        <Menu.Item className={classNames('inlineBlock')} key={tag.id}>
+          <Link to={`${router.tags}/${tag.id}`}>
+            {tag.name}
+          </Link>
+        </Menu.Item>
+      )) : undefined}
       <Menu.Item style={{ backgroundColor: "transparent" }} key="search">
         <Search
           enterButton
@@ -85,46 +52,8 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
           size="small"
         />
       </Menu.Item>
-      {
-        isLoginPage ? undefined : <Menu.Item
-          key="userinfo"
-          style={{ backgroundColor: "transparent", display: "inline-block" }}
-        >
-          {token ? (
-            <>
-              <Avatar size={32} src={avatarUrl} />
-              <span style={{ marginLeft: 8 }}>
-                {username.length > 10
-                  ? `${username.slice(0, 10)}`
-                  : username.padEnd(10, "\u00A0")}
-              </span>
-            </>
-          ) : (
-            <>
-              <Button
-                type="primary"
-                onClick={handleLogin}
-                style={{ padding: "4px 8px" }}
-              >
-                登录
-              </Button>
-              <Modal>
-                <AuthForm usedInModal={true} formType={doLogIn ? "login" : "regist"} />
-              </Modal>
-              <Button
-                type="primary"
-                onClick={handleRegister}
-                style={{
-                  padding: "4px 8px",
-                  marginLeft: 8,
-                }}
-              >
-                注册
-              </Button>
-            </>
-          )}
-        </Menu.Item>
-      }
+      {token ? <NavInfoPanel /> :
+        <NavloginPanel />}
       <Menu.Item
         key="darkmode"
         style={{ backgroundColor: "transparent", display: "inline-block" }}
@@ -137,6 +66,7 @@ const Navigation = ({ token, darkMode, toggleDarkMode, setModalVisible }) => {
           icon={darkMode ? <BulbFilled /> : <BulbOutlined />}
         />
       </Menu.Item>
+
     </Menu>
   );
 };

@@ -1,8 +1,8 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import Navigation from "./Navigation";
 import MFooter from "./Footer";
-import { Layout, Spin } from "antd";
+import { Layout } from "antd";
 import { connect } from "react-redux";
 import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
@@ -21,9 +21,7 @@ const MLayout = ({ darkMode, primaryColor, bgColor }) => {
             backgroundColor: darkMode ? bgColor : primaryColor,
           }}
         >
-          <Suspense fallback={<Spin />}>
           <Outlet />
-          </Suspense>
         </Content>
         <Footer style={{ backgroundColor: bgColor }}>
           <MFooter />

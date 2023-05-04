@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Modal } from "antd";
-import { setModalVisible } from "../store/app";
-
 const RegistModal = ({
   textColor,
   bgColor,
   title,
-  setModalVisible,
-  modalVisible,
   children,
+  visible,
+  visibleChange
 }) => {
   const handleCancel = () => setModalVisible(false);
   const handleOk = () => {
-
     setModalVisible(false);
   };
+  const [modalVisible,setModalVisible]=useState(visible);
+
+  useEffect(()=>{
+    setModalVisible(visible)
+  },[visible])
+  useEffect(()=>{
+    if(typeof visibleChange==='function')
+    visibleChange(modalVisible)
+  },[modalVisible])
   return (
     <Modal
       style={{ backgroundColor: bgColor, color: textColor,padding:0}}
@@ -35,13 +41,11 @@ const RegistModal = ({
 };
 
 const mapStateToProps = (state) => ({
-  modalVisible: state.app.modalVisible,
   bgColor: state.theme[state.app.theme].bgColor,
   textColor: state.theme[state.app.theme].textColor,
 });
 
 const mapDispatchToProps = {
-  setModalVisible,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistModal);

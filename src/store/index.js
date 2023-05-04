@@ -4,6 +4,6 @@ import themeReducer from './theme'
 export default configureStore({
   reducer: {
     app: appReducer,
-    theme:themeReducer,
+    theme:themeReducer
   }
 })

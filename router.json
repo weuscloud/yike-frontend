@@ -1,0 +1,8 @@
+{
+    "login": "/login",
+    "blogs": "/blogs",
+    "users": "/users",
+    "register": "/register",
+    "home":"/",
+    "tags":"/tags"
+}

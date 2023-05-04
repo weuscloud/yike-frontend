@@ -1,6 +1,20 @@
 import { Card, Avatar } from "antd";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-const AuthorCard = ({ name, avatarUrl, bio, textColor, bgColor }) => {
+import {getUser} from '../api/user';
+const AuthorCard = ({ id, textColor, bgColor }) => {
+
+ 
+  const [author,updateAuthor]=useState({})
+  const {name,bio, avatarUrl}=author;
+  useEffect(()=>{
+    if(!id)throw 'invalid use:AuthorCard';
+    const fetchData=async()=>{
+      const a=await getUser({id,name, avatarUrl,bio})
+      updateAuthor(a);
+    }
+    if(id)fetchData();
+  },[])
   return (
     <Card style={{ border: 0, borderRadius: 0, backgroundColor: bgColor }}>
       <Card.Meta
@@ -15,6 +29,7 @@ const AuthorCard = ({ name, avatarUrl, bio, textColor, bgColor }) => {
 const mapStateToProps = (state) => ({
   textColor: state.theme[state.app.theme].textColor,
   bgColor: state.theme[state.app.theme].bgColor,
+  token:state.app.token,
 });
 
 const mapDispatchToProps = {};

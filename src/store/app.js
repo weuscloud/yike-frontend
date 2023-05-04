@@ -2,12 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const appSlice = createSlice({
   name: "app",
   initialState: {
-    // darkMode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
-    darkMode: false,
+    darkMode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
     theme: "light",
     modalVisible: false,
-    PWD_SALT:"WANGQICHENG",
-    token:localStorage.getItem("token")
+    PWD_SALT: "WANGQICHENG",
+    token: localStorage.getItem('token'),
   },
   reducers: {
     toggleDarkMode: (state) => {
@@ -20,11 +19,20 @@ const appSlice = createSlice({
     setDarkMode: (state, action) => {
       state.darkMode = action.payload === true ? true : false;
     },
-    updateToken:(state, action) => {
-      state.token = action.payload.token
-    },
+    updateToken: (state, action) => {
+      const { token, checked } = action.payload;
+      if (typeof token === 'string') {
+        state.token = token;
+        if (checked) {
+          localStorage.setItem('token', token);
+        }
+      } else {
+        state.token = null;
+        localStorage.removeItem('token');
+      }
+    }
   },
 });
 
-export const { setDarkMode,updateToken,toggleDarkMode, setModalVisible } = appSlice.actions;
+export const { setDarkMode, updateToken, toggleDarkMode, setModalVisible } = appSlice.actions;
 export default appSlice.reducer;

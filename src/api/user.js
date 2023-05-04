@@ -1,35 +1,40 @@
 import axios from 'axios';
+import router from '../../router.json';
 // 注册接口
 async function register({ username, password }) {
-  const res = await axios.post('/register', { username, password });
-  if (res.status === 200) {
-    const { token } = res.data;
-    if (token)
-      localStorage.setItem('token', token);
+  try {
+    const res = await axios.post(`${router.register}`, { username, password });
+    return {data:res.data,status:res.status};
+  } catch (error) {
+    return { data: {}, status: 404 }
   }
-  return res;
 }
 
 
 // 登录接口
 async function login({ username, password }) {
-  const res = await axios.post('/login', { username, password });
-  if (res.status === 200) {
-    const { token } = res.data;
-    if (token)
-      localStorage.setItem('token', token);
+  try {
+    const res = await axios.post(`${router.login}`, { username, password });
+    return {data:res.data,status:res.status};
+  } catch (error) {
+    return { data: {}, status: 404 }
   }
-  return res;
 }
 //get user info
-async function getUserById(id){
-  const res = await axios.get(`/users/${id}`);
-  if (res.status === 200) {
-    const { user } = res.data;
-    if (user)
-      return user;
+async function getUser(op) {
+
+  if (typeof op !== 'object') throw 'invalid used.';
+  const id = op.id;
+  try {
+    let url = `${router.users}/${id}?q=`;
+    Object.keys(op).forEach((key) => {
+      url += `${key},`
+    })
+    const response = await axios.get(`${url}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
-  return {};
 }
 
-export { register, login ,getUserById};
+export { register, login,getUser };
