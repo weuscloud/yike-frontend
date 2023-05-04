@@ -40,7 +40,6 @@ export async function getArticle(op) {
 
   if (typeof op !== 'object') throw 'invalid used.';
   const {id } = op;
-  if (typeof id !== 'number') throw 'invalid used.';
   try {
     let url = `${router.blogs}/${id}?q=`;
     Object.keys(op).forEach((key) => {
@@ -92,7 +91,6 @@ export async function getArticles() {
 export async function getTagArticles(op){
   if (typeof op !== 'object') throw 'invalid used.';
   const {id } = op;
-  if (typeof id !== 'number') throw 'invalid used.';
   try {
     let url = `${router.blogs}/tags/${id}?q=`;
     Object.keys(op).forEach((key) => {

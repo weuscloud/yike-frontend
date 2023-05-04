@@ -25,7 +25,6 @@ async function getUser(op) {
 
   if (typeof op !== 'object') throw 'invalid used.';
   const id = op.id;
-  if (typeof id !== 'number') throw 'invalid used.';
   try {
     let url = `${router.users}/${id}?q=`;
     Object.keys(op).forEach((key) => {

@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import {getUser} from '../api/user';
 const AuthorCard = ({ id, textColor, bgColor }) => {
 
-  if(!id)throw 'invalid use:AuthorCard';
+ 
   const [author,updateAuthor]=useState({})
   const {name,bio, avatarUrl}=author;
   useEffect(()=>{
+    if(!id)throw 'invalid use:AuthorCard';
     const fetchData=async()=>{
       const a=await getUser({id,name, avatarUrl,bio})
       updateAuthor(a);
