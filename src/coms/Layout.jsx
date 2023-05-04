@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navigation from "./Navigation";
 import MFooter from "./Footer";
@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
 const MLayout = ({ darkMode, primaryColor, bgColor }) => {
+  useEffect(()=>{
+  },[darkMode])
   return (
     <div
       className={classNames("body")}
