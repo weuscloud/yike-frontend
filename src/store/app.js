@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const appSlice = createSlice({
   name: "app",
   initialState: {
-    darkMode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+    //darkMode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+    darkMode:false,
     theme: "light",
     modalVisible: false,
     PWD_SALT: "WANGQICHENG",
