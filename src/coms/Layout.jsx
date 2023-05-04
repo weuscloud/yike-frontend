@@ -7,8 +7,6 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
 const MLayout = ({ darkMode, primaryColor, bgColor }) => {
-  useEffect(()=>{
-  },[darkMode])
   return (
     <div
       className={classNames("body")}
