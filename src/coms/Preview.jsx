@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import '../css/Preview.css';
 import { getArticle } from "../api/blog";
 import { Spin } from 'antd';
-const Preview = ({ articleId, callback, readOnly, text, bgColor, darkMode, }) => {
+const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textColor, bgColor, darkMode, }) => {
 
     const [content, setContent] = useState(text);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const Preview = ({ articleId, callback, readOnly, text, bgColor, darkMode, }) =>
     }, [text])
     useEffect(() => {
         const fetchData = async () => {
-            const art = await getArticle({ id: articleId, content })
+            const art = await getArticle({ id: articleId, content,viewed })
             setContent(art.content)
         }
         if (readOnly) {
@@ -27,8 +27,8 @@ const Preview = ({ articleId, callback, readOnly, text, bgColor, darkMode, }) =>
     return (
         <Spin spinning={loading}>
             <ReactQuill
-                style={{ backgroundColor: darkMode ? '#fff' : bgColor }}
-
+                style={{ backgroundColor: 'transparent'  }}
+                className={classNames(borderless?'borderless':'')}
                 theme="snow"
                 value={content}
                 onChange={(value) => {
@@ -59,7 +59,7 @@ const Preview = ({ articleId, callback, readOnly, text, bgColor, darkMode, }) =>
 };
 
 const mapStateToProps = (state) => ({
-    textColor: state.theme[state.app.theme].textColor,
+
     bgColor: state.theme[state.app.theme].bgColor,
     darkMode: state.app.darkMode,
     primaryColor: state.theme[state.app.theme].primaryColor,

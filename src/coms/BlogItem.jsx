@@ -1,12 +1,14 @@
 import { LikeOutlined, EyeOutlined, EditOutlined, MessageOutlined, DeleteOutlined, StarOutlined } from "@ant-design/icons";
-import { Col, List, Skeleton, Button } from "antd";
+import { Col, List, Skeleton, Button, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Row } from "antd";
 import Layout from "./TwoColLayout";
 import router from '../../router.json';
 import { getArticle } from "../api/blog";
+import {throttle} from '../hooks/utils'
+import { deleteArticle } from "../api/blog";
 const IconText = ({ icon, text, textColor }) => (
   <>
     <span style={{ color: textColor }}>
@@ -24,9 +26,10 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
 
   const { id } = item;
   const [loading, setLoading] = useState(true);
-
+ const nav=useNavigate();
   const [article, updateArticle] = useState({})
   const { title, description, avatarUrl, views, likes, favorites, commentsCount, updatedAt } = article;
+
   useEffect(() => {
     const fetchData = async () => {
       const ar = await getArticle({ id, title, description, avatarUrl, views, likes, favorites, commentsCount });
@@ -35,17 +38,36 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
 
     }
     const getRandomDelay = () => {
-      return parseInt(100 + Math.random() * 2000);
+      if(!window.articleCount){
+        window.articleCount=200;
+      }else{
+        window.articleCount+=200;
+      }
+      return window.articleCount;
     };
     const timer = setTimeout(() => {
       fetchData();
-    }, getRandomDelay())
-    return () => clearTimeout(timer);
-  }, [])
 
+    }, getRandomDelay())
+
+    return () => {
+      window.articleCount=0;
+      clearTimeout(timer);
+    };
+  }, [])
+  const onDelete=async(e)=>{
+   const status= await deleteArticle(id);
+  if(status===204){
+    message.success("删除成功");
+    nav('.');
+  }else{
+    message.error("删除失败");
+  }
+   
+  }
   return (
     <Row>
-      <Col style={{ marginBottom: '1rem', borderBottom: darkMode ? "" : `1px solid ${primaryColor}`, padding: "1rem 2rem", color: textColor, backgroundColor: bgColor }} xs={24} md={24}>
+      <Col style={{ marginBottom: '1rem',  padding: "1rem 0rem", color: textColor, backgroundColor: darkMode?"transparent":bgColor }} xs={24} md={24}>
         <Skeleton loading={loading} active>
           <Layout
             LeftChild={() => (
@@ -108,14 +130,14 @@ const BlogItem = ({ edit, item, darkMode, primaryColor, bgColor, textColor }) =>
               )
             }
           />
-          <div>
-            <Button type="primary" size="small" icon={<EditOutlined />} >
-              修改
+          {edit?<div>
+            <Button style={{margin:'0 1rem'}} type="primary" size="small" icon={<EditOutlined />} >
+           <Link to={`${router.blogs}/update/${id}`}> 编辑</Link>
             </Button>
-            <Button type="primary" size="small" icon={<DeleteOutlined />} >
+            <Button type="primary" onClick={throttle(onDelete,1000)} size="small" icon={<DeleteOutlined />} >
               删除
             </Button>
-          </div>
+          </div>:undefined}
         </Skeleton>
       </Col>
 

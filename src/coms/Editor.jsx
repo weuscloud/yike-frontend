@@ -3,13 +3,13 @@ import { connect, useSelector } from "react-redux";
 import { Input, Form, Button, message, Spin } from 'antd';
 import Preview from './Preview';
 import useTopTags from "../hooks/useTopTags";
-import { createArticle, getArticle ,updateArticle} from '../api/blog';
+import { createArticle, getArticle, updateArticle } from '../api/blog';
 import { throttle } from '../hooks/utils';
 import useOperationAndId from '../hooks/useOperationAndId';
 
 function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
 
-  
+
   const [loading, setLoading] = useState(true);
 
   const [title, updateTitle] = useState('');
@@ -21,13 +21,14 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ar = await getArticle({id,title,description,content});
-     updateTitle(ar.title);
-     updateDesc(ar.description);
-     updateContent(ar.content);
-     setLoading(false);
+      const ar = await getArticle({ id, title, description, content,tags });
+      updateTitle(ar.title);
+      updateDesc(ar.description);
+      updateContent(ar.content);
+      setSelectedTags(ar.tags)
+      setLoading(false);
     }
-    if (id > 0 && id < 1e9 ) {
+    if (id > 0 && id < 1e9) {
       fetchData();
     } else {
       setLoading(false);
@@ -36,13 +37,16 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
 
   const { operation } = useOperationAndId();
 
-  const handleTagClick = tag => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter(t => t !== tag));
+  const handleTagClick = (tag) => {
+    const { id, name } = tag;
+
+    if (selectedTags.some((t) => t.id === id)) {
+      setSelectedTags((prevTags) => prevTags.filter((t) => t.id !== id));
     } else {
-      setSelectedTags([...selectedTags, tag]);
+      setSelectedTags((prevTags) => [...prevTags, { id, name }]);
     }
   };
+
   const EditorObj = {
     'create': async (form) => {
       try {
@@ -59,7 +63,7 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
     }
     ,
     'update': async (form) => {
-      const { id:cbId } = await updateArticle({id,...form});
+      const { id: cbId } = await updateArticle({ id, ...form });
 
       if (cbId) {
         message.success(`文章编辑成功[${cbId}]`);
@@ -92,7 +96,7 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
           name={'title'}
         >
           <Spin spinning={loading}>
-            <Input value={title} onChange={(e) => {
+            <Input style={{backgroundColor: darkMode ? textColor : bgColor }} max={20} value={title} onChange={(e) => {
               updateTitle(e.target.value)
             }} />
           </Spin>
@@ -104,7 +108,7 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
           name={'description'}
         >
           <Spin spinning={loading}>
-            <Input value={description} onChange={(e) => {
+            <Input style={{backgroundColor: darkMode ? textColor : bgColor }} max={60} value={description} onChange={(e) => {
               updateDesc(e.target.value)
 
             }} />
@@ -128,12 +132,13 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
           {tags.map(tag => (
             <Button
               key={tag.id}
-              type={selectedTags.includes(tag.id) ? 'primary' : 'default'}
-              onClick={() => handleTagClick(tag.id)}
+              type={selectedTags.some((t) => t.id === tag.id) ? 'primary' : 'default'}
+              onClick={() => handleTagClick({ id: tag.id, name: tag.name })}
               style={{ margin: 5 }}
             >
               {tag.name}
             </Button>
+
           ))}
         </Form.Item>
 

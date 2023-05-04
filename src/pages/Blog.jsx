@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import LeftBar from '../coms/VerticalMenu';
 import Editor from '../coms/Editor';
-
+import Reader from '../coms/Reader';
 import router from '../../router.json'
 import "../css/Blog.css";
 import Preview from "../coms/Preview";
@@ -25,31 +25,18 @@ function Blog({ token, bgColor, darkMode }) {
   const { '*': path } = useParams();
   const back = useBack();
 
-  useEffect(() => {
-    //blog center
-    if(path.length ==0&&!token)
-    {
-      nav(router.login);
-      return;
-    }
-    //reading
-    if(!operation &&id>0&&id<1e9)
-    {
-      return;
-    }
-    //illegal
-    if (!operation && !id&&path.length>0)
-     {
-      back();
-      return;
-     }
-    //no token but op
-    if (operation && !token)
-    {
-      nav(router.login);
-      return;
-    }
-  }, [token]);
+
+   //blog center
+   if(path.length==0&&!token)
+   {
+     back();
+     return <></>;
+   }
+   else if (operation && !token)
+   {
+     nav(router.login);
+     return <></>;
+   }
 
   //blogCenter
   if (path.length == 0&&token) {
@@ -57,8 +44,8 @@ function Blog({ token, bgColor, darkMode }) {
       <Col xs={24} md={20} >
         <TwoColLayout
           rightCol={19}
-          LeftChild={() => (<LeftBar location={'article'} operation={operation} />)}
-          RightChild={()=><BlogList pop={false}/>}
+          LeftChild={() => (<LeftBar location={'blogs'} operation={operation} />)}
+          RightChild={()=><BlogList edit channel={'users'}/>}
         />
       </Col>
     </Row>)
@@ -73,11 +60,7 @@ function Blog({ token, bgColor, darkMode }) {
             LeftChild={() => (<LeftBar />)}
             RightChild={() => (<Editor id={id} readOnly={false} />)}
           />) : (
-          <TwoColLayout
-            rightCol={6}
-            LeftChild={() => (<Preview articleId={id} readOnly={true} />)}
-            RightChild={() => (<></>)}
-          />)
+          <Reader id={id}/>)
         }
       </Col>
     </Row>

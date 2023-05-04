@@ -22,13 +22,21 @@ async function login({ username, password }) {
   }
 }
 //get user info
- async function getUserById(id) {
+async function getUser(op) {
+
+  if (typeof op !== 'object') throw 'invalid used.';
+  const id = parseInt(op.id);
+  if (typeof id !== 'number') throw 'invalid used.';
   try {
-    const res = await axios.get(`${router.users}/${parseInt(id)}`);
-    return res.data;
+    let url = `/users/${id}?q=`;
+    Object.keys(op).forEach((key) => {
+      url += `${key},`
+    })
+    const response = await axios.get(`${url}`);
+    return response.data;
   } catch (error) {
-    return { }
+    console.error(error);
   }
 }
 
-export { register, login,getUserById };
+export { register, login,getUser };

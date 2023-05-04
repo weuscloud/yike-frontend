@@ -74,10 +74,10 @@ export async function updateArticle({ id, title, description, content, tags }) {
     console.error(error);
   }
 }
-async function deleteArticle(id) {
+export async function deleteArticle(id) {
   try {
     const response = await api.delete(`/blogs/${id}`);
-    return response.data;
+    return response.status;
   } catch (error) {
     console.error(error);
   }
@@ -88,5 +88,20 @@ export async function getArticles() {
     return res.data;
   } catch (error) {
     return {}
+  }
+}
+export async function getTagArticles(op){
+  if (typeof op !== 'object') throw 'invalid used.';
+  const id = parseInt(op.id);
+  if (typeof id !== 'number') throw 'invalid used.';
+  try {
+    let url = `/blogs/tags/${id}?q=`;
+    Object.keys(op).forEach((key) => {
+      url += `${key},`
+    })
+    const response = await api.get(`${url}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
 }

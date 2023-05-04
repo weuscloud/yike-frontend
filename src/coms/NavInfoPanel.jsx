@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import router from '../../router.json';
 import { message } from 'antd';
-import { getUserById } from '../api/user';
+import { getUser } from '../api/user';
 import jwt_decode from 'jwt-decode';
 const items = [
   {
@@ -42,7 +42,7 @@ const NavInfoPanel = ({ textColor, updateToken,darkMode, bgColor, token }) => {
   } = user;
   useEffect(()=>{
     const fetchUser=async()=>{
-     const u=await getUserById(id);
+     const u=await getUser({id,updatedAt});
     if(u.updatedAt!==updatedAt){
       updateToken({token:null})
     }

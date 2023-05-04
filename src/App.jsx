@@ -11,6 +11,7 @@ const Register = React.lazy(() => import("./pages/Register"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Blog = React.lazy(() => import("./pages/Blog"));
 const User = React.lazy(() => import("./pages/User"));
+const Tag = React.lazy(() => import("./pages/Tag"));
 function App() {
   const darkMode = useSelector((state) => state.app.darkMode);
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route index element={<Suspense fallback={<Spin/>}><Home /></Suspense>} />
             <Route path={router.login} element={<Suspense fallback={<Spin/>}><Login /></Suspense>} />
             <Route path={router.register} element={<Suspense fallback={<Spin/>}><Register /></Suspense>} />
+            <Route path={`/${router.tags}/:id`} element={<Suspense fallback={<Spin/>}><Tag /></Suspense>} />
             <Route path={`/${router.users}/*`} element={<Suspense fallback={<Spin/>}><User /></Suspense>} />
             <Route path={`/${router.blogs}/*`} element={<Suspense fallback={<Spin/>}><Blog /></Suspense>} />
             <Route path="*" element={<Suspense fallback={<Spin/>}><NotFound /></Suspense>} />

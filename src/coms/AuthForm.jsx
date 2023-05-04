@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { register, login, getUserById } from "../api/user";
+import { register, login, getUser } from "../api/user";
 import SAFE from 'crypto-js';
 import { updateToken } from '../store/app'
 import { message } from 'antd';
@@ -42,7 +42,7 @@ function AuthForm({ children, formType, bgColor, textColor, token, updateToken, 
         const {id,updatedAt}=decoded.user;
         const ldate = new Date(updatedAt); 
         
-        const {updatedAt:newUpdatedAt}=await getUserById(id);
+        const {updatedAt:newUpdatedAt}=await getUserById({id,updatedAt});
         const ndate=new Date(newUpdatedAt); 
         
 

@@ -15,7 +15,7 @@ const App = () => {
   };
 
   return (
-    <div className="carousel-container">
+    <div className="carousel-container" style={{marginBottom:"1rem"}}>
       <Spin spinning={loading}>
       <Carousel autoplay afterChange={handleImageLoad}>
         {images.map((image, index) => (

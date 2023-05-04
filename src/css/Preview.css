@@ -11,3 +11,9 @@
 .ql-editor>p{
   font-size: 1rem;
 }
+.borderless.quill{
+  border: 0;
+}
+.editor-bg{
+  background-color: transparent;
+}
