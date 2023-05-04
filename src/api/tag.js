@@ -3,11 +3,9 @@ import axios from 'axios';
 
 // 获取所有tag
 const getTopTags = async () => {
-  const tags = localStorage.getItem('topTags');
-  if (tags) {
-    return JSON.parse(tags);
-  }
   const response = await axios.get('/tags/top');
+  if(response.status!==200)
+  return [];
   return response.data;
 };
 
