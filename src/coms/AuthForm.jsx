@@ -57,10 +57,6 @@ function AuthForm({ children, formType, bgColor, textColor, token, updateToken, 
         }
       }
 
-
-
-
-
       let { username, password } = values;
       const salt = PWD_SALT;
       password = SAFE.SHA256(password + salt).toString();
