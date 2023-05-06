@@ -7,6 +7,51 @@ import classNames from 'classnames';
 import '../css/Preview.css';
 import { getArticle } from "../api/blog";
 import { Spin } from 'antd';
+import axios from 'axios';
+const modules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        [{ color: [] }], // 添加设置颜色的按钮
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['link', 'image', 'video'],
+      ],
+      handlers: {
+        // 点击图片或视频按钮时触发的事件
+        image: function () {
+          handleFileSelect(this,'image/*', 'image');
+        },
+        video: function () {
+          handleFileSelect(this,'video/*', 'video');
+        }
+      },
+    },
+  };
+  
+  function handleFileSelect(_,accept, type) {
+    // 弹出文件选择对话框
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', accept);
+    input.onchange = () => {
+      // 上传选择的文件到服务器
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append(type, file);
+      axios.post(`/uploads/${type}`, formData).then((res) => {
+        const range = _.quill.getSelection();
+        // 插入服务器返回的文件地址到富文本编辑器中
+        const fileUrl = res.data.data;
+        const typeString = type === 'image' ? 'image' : 'video';
+        _.quill.insertEmbed(range.index, typeString, fileUrl, 'user');
+      });
+    };
+    input.click();
+  }
+  
+  
+  const formats = ['header', 'bold', 'italic', 'underline', 'strike', 'color ','image'];
 const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textColor, bgColor, darkMode, }) => {
 
     const [content, setContent] = useState(text);
@@ -27,7 +72,7 @@ const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textCo
     return (
         <Spin spinning={loading}>
             <ReactQuill
-                style={{color:textColor, backgroundColor: 'transparent'  }}
+               
                 className={classNames(borderless?'borderless':'')}
                 theme="snow"
                 value={content}
@@ -38,21 +83,8 @@ const Preview = ({ viewed,borderless ,articleId, callback, readOnly, text,textCo
                         callback(value);
                 }}
                 readOnly={readOnly}
-                modules={{
-                    toolbar: readOnly ? null : {
-                        container: [
-                            [{ header: [1, 2, 3, false] }],
-                            [{ color: [] }], // 添加设置颜色的按钮
-                            ['bold', 'italic', 'underline'],
-                            [{ list: 'ordered' }, { list: 'bullet' }],
-                            ['link', 'image', 'video'],
-                        ]
-                    },
-
-                    clipboard: {
-                        matchVisual: false,
-                    },
-                }}
+                modules={modules}
+            
             />
         </Spin>
     );
