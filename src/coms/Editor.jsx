@@ -54,7 +54,7 @@ function RichTextEditor({ id, bgColor, darkMode, primaryColor, textColor }) {
 
         if (msg) {
           message.error(`文章创建失败[${msg}]`);
-        } else {
+        } else if(id){
           message.success(`文章创建成功[${id}]`);
         }
       } catch (error) {
