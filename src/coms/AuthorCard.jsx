@@ -6,7 +6,7 @@ const AuthorCard = ({ id, textColor, bgColor }) => {
 
  
   const [author,updateAuthor]=useState({})
-  const {name,bio, avatarUrl}=author;
+  const {name,bio, avatarUrl}=author||{};
   useEffect(()=>{
     if(!id)throw 'invalid use:AuthorCard';
     const fetchData=async()=>{

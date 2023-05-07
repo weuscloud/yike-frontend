@@ -48,11 +48,15 @@ const BlogItem = ({ edit, item, darkMode, bgColor, textColor }) => {
       }
       return window.articleCount;
     };
-    const timer = setTimeout(() => {
-      if (id) fetchData();
+    let timer;
+    if (id) {
+      timer = setTimeout(() => {
+        fetchData();
 
-    }, getRandomDelay())
+      }, getRandomDelay())
 
+
+    } 
     return () => {
       window.articleCount = 0;
       clearTimeout(timer);
@@ -143,7 +147,7 @@ const BlogItem = ({ edit, item, darkMode, bgColor, textColor }) => {
               <div>
                 <div>删除文章</div>
                 <div style={{ textAlign: "center" }}><strong >{title}</strong></div>
-                <div style={{ justifyContent: "space-between" }} className={classNames("Flex-Center","margin-top-bottom")}> <Button type="primary" onClick={throttle(() => setModalVisible(false), 1000)} size="middle"  >
+                <div style={{ justifyContent: "space-between" }} className={classNames("Flex-Center", "margin-top-bottom")}> <Button type="primary" onClick={throttle(() => setModalVisible(false), 1000)} size="middle"  >
                   取消
                 </Button>
                   <Button type="primary" onClick={throttle(onDelete, 1000)} size="middle" >
