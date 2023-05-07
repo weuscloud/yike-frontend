@@ -4,7 +4,6 @@ import Navigation from "./Navigation";
 import MFooter from "./Footer";
 import { Layout } from "antd";
 import { connect } from "react-redux";
-import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
 const MLayout = ({ darkMode }) => {
   useEffect(() => {
@@ -13,18 +12,20 @@ const MLayout = ({ darkMode }) => {
     else {
       document.body.classList = 'bg-light'
     }
-  }, [darkMode])
+  },[darkMode])
   return (
     <Layout>
-      <Header className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}>
+      <Header style={{ backgroundColor: bgColor }}>
         <Navigation />
       </Header>
       <Content
-        className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}
+        style={{
+          backgroundColor: darkMode ? bgColor : primaryColor,
+        }}
       >
         <Outlet />
       </Content>
-      <Footer className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}>
+      <Footer style={{ backgroundColor: bgColor }}>
         <MFooter />
       </Footer>
     </Layout>
