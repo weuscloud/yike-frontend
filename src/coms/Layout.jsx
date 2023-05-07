@@ -4,36 +4,31 @@ import Navigation from "./Navigation";
 import MFooter from "./Footer";
 import { Layout } from "antd";
 import { connect } from "react-redux";
-import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
 const MLayout = ({ darkMode, primaryColor, bgColor }) => {
-  useEffect(()=>{
-    if(darkMode)
-    document.body.classList='bg-dark'
-    else{
-      document.body.classList='bg-normal'
+  useEffect(() => {
+    if (darkMode)
+      document.body.classList = 'bg-dark'
+    else {
+      document.body.classList = 'bg-normal'
     }
-  },[darkMode])
+  }, [darkMode])
   return (
-    <div
-      style={{ backgroundColor: darkMode ? bgColor : primaryColor }}
-    >
-      <Layout>
-        <Header style={{ backgroundColor: bgColor }}>
-          <Navigation />
-        </Header>
-        <Content
-          style={{
-            backgroundColor: darkMode ? bgColor : primaryColor,
-          }}
-        >
-          <Outlet />
-        </Content>
-        <Footer style={{ backgroundColor: bgColor }}>
-          <MFooter />
-        </Footer>
-      </Layout>
-    </div>
+    <Layout>
+      <Header style={{ backgroundColor: bgColor }}>
+        <Navigation />
+      </Header>
+      <Content
+        style={{
+          backgroundColor: darkMode ? bgColor : primaryColor,
+        }}
+      >
+        <Outlet />
+      </Content>
+      <Footer style={{ backgroundColor: bgColor }}>
+        <MFooter />
+      </Footer>
+    </Layout>
   );
 };
 
