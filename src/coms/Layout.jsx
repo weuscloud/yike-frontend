@@ -6,41 +6,33 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
-const MLayout = ({ darkMode, primaryColor, bgColor }) => {
-  useEffect(()=>{
-    if(darkMode)
-    document.body.classList='bg-dark'
-    else{
-      document.body.classList='bg-normal'
+const MLayout = ({ darkMode }) => {
+  useEffect(() => {
+    if (darkMode)
+      document.body.classList = 'bg-dark'
+    else {
+      document.body.classList = 'bg-light'
     }
-  },[darkMode])
+  }, [darkMode])
   return (
-    <div
-      style={{ backgroundColor: darkMode ? bgColor : primaryColor }}
-    >
-      <Layout>
-        <Header style={{ backgroundColor: bgColor }}>
-          <Navigation />
-        </Header>
-        <Content
-          style={{
-            backgroundColor: darkMode ? bgColor : primaryColor,
-          }}
-        >
-          <Outlet />
-        </Content>
-        <Footer style={{ backgroundColor: bgColor }}>
-          <MFooter />
-        </Footer>
-      </Layout>
-    </div>
+    <Layout>
+      <Header className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}>
+        <Navigation />
+      </Header>
+      <Content
+        className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}
+      >
+        <Outlet />
+      </Content>
+      <Footer className={classNames(darkMode ? 'bg-dark' : 'bg-normal')}>
+        <MFooter />
+      </Footer>
+    </Layout>
   );
 };
 
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,
-  bgColor: state.theme[state.app.theme].bgColor,
-  primaryColor: state.theme[state.app.theme].primaryColor,
 });
 
 const mapDispatchToProps = {};

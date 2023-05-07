@@ -39,6 +39,9 @@ footer,header{
 .bg-dark{
   background-color: #001529;
 }
-.bg-normal{
+.bg-light{
   background-color: #f5f5f5;
+}
+.bg-normal{
+  background-color: #fff;
 }
