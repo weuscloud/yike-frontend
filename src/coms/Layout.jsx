@@ -5,7 +5,7 @@ import MFooter from "./Footer";
 import { Layout } from "antd";
 import { connect } from "react-redux";
 const { Header, Content, Footer } = Layout;
-const MLayout = ({ darkMode }) => {
+const MLayout = ({ darkMode ,bgColor,primaryColor}) => {
   useEffect(() => {
     if (darkMode)
       document.body.classList = 'bg-dark'
@@ -34,6 +34,8 @@ const MLayout = ({ darkMode }) => {
 
 const mapStateToProps = (state) => ({
   darkMode: state.app.darkMode,
+  bgColor: state.theme[state.app.theme].bgColor,
+  primaryColor:state.theme[state.app.theme].primaryColor,
 });
 
 const mapDispatchToProps = {};
