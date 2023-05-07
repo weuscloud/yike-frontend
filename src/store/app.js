@@ -3,7 +3,7 @@ const appSlice = createSlice({
   name: "app",
   initialState: {
     //darkMode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
-    darkMode:false,
+    darkMode:localStorage.getItem('dark')?true:false,
     theme: "light",
     modalVisible: false,
     PWD_SALT: "WANGQICHENG",
@@ -11,8 +11,10 @@ const appSlice = createSlice({
   },
   reducers: {
     toggleDarkMode: (state) => {
-      state.darkMode = !state.darkMode;
-      state.theme = state.darkMode ? "dark" : "light";
+      const {darkMode}=state
+      state.darkMode = !darkMode;
+      state.theme = darkMode ? "dark" : "light";
+      darkMode?localStorage.setItem('dark',1):localStorage.removeItem('dark');
     },
     setModalVisible: (state, action) => {
       state.modalVisible = action.payload === true ? true : false;
