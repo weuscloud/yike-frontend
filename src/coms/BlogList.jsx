@@ -11,22 +11,20 @@ const BlogList = ({channel, data,edit,id }) => {
     const fetchData = async () => {
       if (channel === 'pop') {
         const res = await getPOPArticles();
-       
-        setListData(res);
+        if(res)setListData(res);
         setLoading(false);
         return;
       }  
       if(channel==='users'){
         const res = await getArticles();
-      
-        setListData(res);
+        if(res)setListData(res);
         setLoading(false);
         return;
       } 
       if(channel==='tags'&&id){
     
         const res = await getTagArticles({id});
-        setListData(res);
+        if(res)setListData(res);
         setLoading(false);
         return;
       }

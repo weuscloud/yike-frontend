@@ -7,9 +7,15 @@ import { connect } from "react-redux";
 import classNames from "classnames";
 const { Header, Content, Footer } = Layout;
 const MLayout = ({ darkMode, primaryColor, bgColor }) => {
+  useEffect(()=>{
+    if(darkMode)
+    document.body.classList='bg-dark'
+    else{
+      document.body.classList='bg-normal'
+    }
+  },[darkMode])
   return (
     <div
-      className={classNames("body")}
       style={{ backgroundColor: darkMode ? bgColor : primaryColor }}
     >
       <Layout>

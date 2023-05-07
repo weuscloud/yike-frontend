@@ -12,7 +12,6 @@ const AuthorCard = ({ id, textColor, bgColor }) => {
     const fetchData=async()=>{
       const a=await getUser({id,name, avatarUrl,bio})
       updateAuthor(a);
-      console.log(author)
     }
     if(id)fetchData();
   },[])

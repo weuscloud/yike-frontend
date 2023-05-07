@@ -106,7 +106,7 @@ function AuthForm({ children, formType, bgColor, textColor, token, updateToken, 
         </Form.Item>
         <Form.Item
         >
-          <Checkbox checked={checked} onChange={onCheckboxChange}>7天免登录</Checkbox>
+          <Checkbox style={{color:textColor}} checked={checked} onChange={onCheckboxChange}>7天免登录</Checkbox>
           <Button
             style={{ float: "right" }}
             type="primary"
