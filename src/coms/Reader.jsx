@@ -11,9 +11,9 @@ function Reader({ id, bgColor, darkMode }) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchData = async () => {
-            const { id } = await getAuthor({ id });
-            if (id) {
-                setAuthorId(id);
+            const { id:authorId } = await getAuthor({ id });
+            if (authorId) {
+                setAuthorId(authorId);
                 setLoading(false);
             }
         }
