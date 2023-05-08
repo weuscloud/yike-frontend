@@ -25,10 +25,10 @@ function Reader({ id, bgColor, darkMode }) {
             rightCol={6}
             LeftChild={() => (<div style={{ backgroundColor: darkMode ? 'transparent' : bgColor }}>
                 <BlogList data={[{ 'id': id }]} />
-                <Preview viewed borderless articleId={id} readOnly={true} />
+                {loading?undefined:<Preview viewed borderless articleId={id} readOnly={true} />}
             </div>)}
             RightChild={() => (
-                loading?<></>:<AuthorCard id={authorId} />)}
+                <AuthorCard id={authorId} />)}
         />
     );
 }
