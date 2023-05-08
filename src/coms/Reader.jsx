@@ -1,22 +1,34 @@
 import { connect } from "react-redux";
 import TwoColLayout from "./TwoColLayout";
 import BlogList from './BlogList';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "../css/Reader.css";
 import Preview from "./Preview";
 import AuthorCard from "./AuthorCard";
-
-function Reader({id,bgColor, darkMode }) {
-    if(!id)throw 'invalid used:Reader';
+import { getAuthor } from "../api/blog";
+function Reader({ id, bgColor, darkMode }) {
+    const [authorId, setAuthorId] = useState('1');
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchData = async () => {
+            const { id } = await getAuthor({ id });
+            if (id) {
+                setAuthorId(id);
+                setLoading(false);
+            }
+        }
+        if (!id) throw 'invalid used:Reader';
+        else fetchData();
+    }, [id])
     return (
         <TwoColLayout
             rightCol={6}
-            LeftChild={() => (<div style={{backgroundColor: darkMode ? 'transparent' : bgColor }}>
+            LeftChild={() => (<div style={{ backgroundColor: darkMode ? 'transparent' : bgColor }}>
                 <BlogList data={[{ 'id': id }]} />
                 <Preview viewed borderless articleId={id} readOnly={true} />
             </div>)}
             RightChild={() => (
-            <AuthorCard id={1}/>)}
+                loading?<></>:<AuthorCard id={authorId} />)}
         />
     );
 }

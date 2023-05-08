@@ -39,7 +39,7 @@ export async function createArticle({ title, description, content, tags }) {
 export async function getArticle(op) {
 
   if (typeof op !== 'object') throw 'invalid used.';
-  const {id } = op;
+  const { id } = op;
   try {
     let url = `${router.blogs}/${id}?q=`;
     Object.keys(op).forEach((key) => {
@@ -88,11 +88,25 @@ export async function getArticles() {
     return {}
   }
 }
-export async function getTagArticles(op){
+export async function getTagArticles(op) {
   if (typeof op !== 'object') throw 'invalid used.';
-  const {id } = op;
+  const { id } = op;
   try {
     let url = `${router.blogs}/tags/${id}?q=`;
+    Object.keys(op).forEach((key) => {
+      url += `${key},`
+    })
+    const response = await api.get(`${url}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function getAuthor(op) {
+  if (typeof op !== 'object') throw 'invalid used.';
+  const { id } = op;
+  try {
+    let url = `${router.blogs}/${id}/author?q=`;
     Object.keys(op).forEach((key) => {
       url += `${key},`
     })
