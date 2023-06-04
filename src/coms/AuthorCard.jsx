@@ -8,12 +8,11 @@ const AuthorCard = ({ id, textColor, bgColor }) => {
   const [author,updateAuthor]=useState({})
   const {name,bio, avatarUrl}=author||{};
   useEffect(()=>{
-    if(!id)throw 'invalid use:AuthorCard';
     const fetchData=async()=>{
       const a=await getUser({id,name, avatarUrl,bio})
       updateAuthor(a);
     }
-    if(id)fetchData();
+    if(typeof id ==='number'&&id>0)fetchData();
   },[])
   return (
     <Card style={{ border: 0, borderRadius: 0, backgroundColor: bgColor }}>
